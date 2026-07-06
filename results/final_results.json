@@ -1,0 +1,111 @@
+{
+  "dataset": "Telco Customer Churn",
+  "n_records": 7043,
+  "n_attributes": 20,
+  "llm_model": "deepseek-chat",
+  "best_strategy": "few_shot",
+  "timestamp": "2026-06-29 18:31:47.895296",
+  "cfd_discovery_by_strategy": {
+    "zero_shot": {
+      "candidates": 15,
+      "validated": 12,
+      "filter_rate": 0.06666666666666667,
+      "gate_gain": 0.0,
+      "precision": 0.6666666666666666,
+      "recall": 0.4,
+      "f1": 0.5,
+      "tp": 8,
+      "fp": 4,
+      "fn": 12
+    },
+    "few_shot": {
+      "candidates": 31,
+      "validated": 25,
+      "filter_rate": 0.12903225806451613,
+      "gate_gain": 0.024615384615384595,
+      "precision": 0.64,
+      "recall": 0.8,
+      "f1": 0.7111111111111111,
+      "tp": 16,
+      "fp": 9,
+      "fn": 4
+    },
+    "cot_fewshot": {
+      "candidates": 31,
+      "validated": 25,
+      "filter_rate": 0.12903225806451613,
+      "gate_gain": 0.024615384615384595,
+      "precision": 0.64,
+      "recall": 0.8,
+      "f1": 0.7111111111111111,
+      "tp": 16,
+      "fp": 9,
+      "fn": 4
+    }
+  },
+  "cfd_discovery": {
+    "candidates": 31,
+    "validated": 25,
+    "filter_rate": 0.12903225806451613,
+    "gate_gain": 0.024615384615384595,
+    "precision": 0.64,
+    "recall": 0.8,
+    "f1": 0.7111111111111111,
+    "tp": 16,
+    "fp": 9,
+    "fn": 4
+  },
+  "anomaly_detection": {
+    "LLM-CFD": {
+      "auprc": 0.5656744268296195,
+      "precision_at_k": 1.0,
+      "ndcg_at_k": 1.0000000000000004
+    },
+    "LLM-NoGate": {
+      "auprc": 0.5038177937479502,
+      "precision_at_k": 1.0,
+      "ndcg_at_k": 1.0000000000000004
+    },
+    "EIF": {
+      "auprc": 0.45640218446254166,
+      "precision_at_k": 0.91,
+      "ndcg_at_k": 0.9335060434112078
+    },
+    "COPOD": {
+      "auprc": 0.36271761353658405,
+      "precision_at_k": 0.8,
+      "ndcg_at_k": 0.8392872564338911
+    },
+    "LLM-CFD+EIF": {
+      "auprc": 0.5427793325191329,
+      "precision_at_k": 1.0,
+      "ndcg_at_k": 1.0000000000000004
+    },
+    "LLM-CFD+COPOD": {
+      "auprc": 0.5826683564181577,
+      "precision_at_k": 1.0,
+      "ndcg_at_k": 1.0000000000000004
+    }
+  },
+  "ablation": {
+    "LLM-NoGate": {
+      "auprc": 0.5038177937479502,
+      "precision_at_k": 1.0,
+      "ndcg_at_k": 1.0000000000000004
+    },
+    "fixed_threshold_095": {
+      "auprc": 0.5656744268296195,
+      "precision_at_k": 1.0,
+      "ndcg_at_k": 1.0000000000000004
+    },
+    "full_pipeline": {
+      "auprc": 0.5656744268296195,
+      "precision_at_k": 1.0,
+      "ndcg_at_k": 1.0000000000000004
+    }
+  },
+  "anomaly_injection": {
+    "total_injected": 1267,
+    "injection_rate": 0.17989493113729946
+  }
+}

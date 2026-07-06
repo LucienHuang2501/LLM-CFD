@@ -1,0 +1,228 @@
+[
+  {
+    "type": "enum",
+    "condition_attributes": [
+      "InternetService"
+    ],
+    "condition_values": {
+      "InternetService": "No"
+    },
+    "dependent_attribute": "OnlineSecurity",
+    "expected_pattern": {
+      "values": [
+        "No internet service"
+      ]
+    },
+    "confidence_estimate": "high",
+    "natural_language_description": "当互联网服务为'No'时，在线安全服务必须为'No internet service'",
+    "status": "validated",
+    "support": 0.21666903308249325,
+    "confidence": 1.0
+  },
+  {
+    "type": "enum",
+    "condition_attributes": [
+      "InternetService"
+    ],
+    "condition_values": {
+      "InternetService": "No"
+    },
+    "dependent_attribute": "OnlineBackup",
+    "expected_pattern": {
+      "values": [
+        "No internet service"
+      ]
+    },
+    "confidence_estimate": "high",
+    "natural_language_description": "当互联网服务为'No'时，在线备份服务必须为'No internet service'",
+    "status": "validated",
+    "support": 0.21666903308249325,
+    "confidence": 1.0
+  },
+  {
+    "type": "enum",
+    "condition_attributes": [
+      "InternetService"
+    ],
+    "condition_values": {
+      "InternetService": "No"
+    },
+    "dependent_attribute": "DeviceProtection",
+    "expected_pattern": {
+      "values": [
+        "No internet service"
+      ]
+    },
+    "confidence_estimate": "high",
+    "natural_language_description": "当互联网服务为'No'时，设备保护服务必须为'No internet service'",
+    "status": "validated",
+    "support": 0.21666903308249325,
+    "confidence": 1.0
+  },
+  {
+    "type": "enum",
+    "condition_attributes": [
+      "InternetService"
+    ],
+    "condition_values": {
+      "InternetService": "No"
+    },
+    "dependent_attribute": "TechSupport",
+    "expected_pattern": {
+      "values": [
+        "No internet service"
+      ]
+    },
+    "confidence_estimate": "high",
+    "natural_language_description": "当互联网服务为'No'时，技术支持服务必须为'No internet service'",
+    "status": "validated",
+    "support": 0.21666903308249325,
+    "confidence": 1.0
+  },
+  {
+    "type": "enum",
+    "condition_attributes": [
+      "InternetService"
+    ],
+    "condition_values": {
+      "InternetService": "No"
+    },
+    "dependent_attribute": "StreamingTV",
+    "expected_pattern": {
+      "values": [
+        "No internet service"
+      ]
+    },
+    "confidence_estimate": "high",
+    "natural_language_description": "当互联网服务为'No'时，流媒体电视服务必须为'No internet service'",
+    "status": "validated",
+    "support": 0.21666903308249325,
+    "confidence": 1.0
+  },
+  {
+    "type": "enum",
+    "condition_attributes": [
+      "InternetService"
+    ],
+    "condition_values": {
+      "InternetService": "No"
+    },
+    "dependent_attribute": "StreamingMovies",
+    "expected_pattern": {
+      "values": [
+        "No internet service"
+      ]
+    },
+    "confidence_estimate": "high",
+    "natural_language_description": "当互联网服务为'No'时，流媒体电影服务必须为'No internet service'",
+    "status": "validated",
+    "support": 0.21666903308249325,
+    "confidence": 1.0
+  },
+  {
+    "type": "enum",
+    "condition_attributes": [
+      "PhoneService"
+    ],
+    "condition_values": {
+      "PhoneService": "No"
+    },
+    "dependent_attribute": "MultipleLines",
+    "expected_pattern": {
+      "values": [
+        "No phone service"
+      ]
+    },
+    "confidence_estimate": "high",
+    "natural_language_description": "当电话服务为'No'时，多线路服务必须为'No phone service'",
+    "status": "validated",
+    "support": 0.09683373562402385,
+    "confidence": 1.0
+  },
+  {
+    "type": "consistency",
+    "condition_attributes": [
+      "tenure",
+      "MonthlyCharges"
+    ],
+    "condition_values": {},
+    "dependent_attribute": "TotalCharges",
+    "expected_pattern": {
+      "relation": "TotalCharges ≈ tenure * MonthlyCharges"
+    },
+    "confidence_estimate": "high",
+    "natural_language_description": "总费用应近似等于在网月数乘以月费用",
+    "status": "validated",
+    "support": 1.0,
+    "confidence": 1.0
+  },
+  {
+    "type": "range",
+    "condition_attributes": [
+      "Contract"
+    ],
+    "condition_values": {
+      "Contract": "Month-to-month"
+    },
+    "dependent_attribute": "MonthlyCharges",
+    "expected_pattern": {
+      "min": 18,
+      "max": 120
+    },
+    "confidence_estimate": "medium",
+    "natural_language_description": "按月合同客户的月消费范围较广，通常在18-120美元之间",
+    "status": "validated",
+    "support": 0.5501916796819537,
+    "confidence": 1.0
+  },
+  {
+    "type": "logic",
+    "condition_attributes": [
+      "InternetService"
+    ],
+    "condition_values": {
+      "InternetService": "Fiber optic"
+    },
+    "dependent_attribute": "MonthlyCharges",
+    "expected_pattern": {
+      "expression": "MonthlyCharges > 50"
+    },
+    "confidence_estimate": "medium",
+    "natural_language_description": "光纤互联网服务客户的月消费通常高于50美元",
+    "status": "validated",
+    "support": 0.4395854039471816,
+    "confidence": 1.0
+  },
+  {
+    "type": "fd",
+    "condition_attributes": [
+      "gender"
+    ],
+    "condition_values": {},
+    "dependent_attribute": "Churn",
+    "expected_pattern": {
+      "determines": "No"
+    },
+    "confidence_estimate": "low",
+    "natural_language_description": "性别与客户流失无强关联",
+    "status": "validated",
+    "support": 1.0,
+    "confidence": 1.0
+  },
+  {
+    "type": "fd",
+    "condition_attributes": [
+      "SeniorCitizen"
+    ],
+    "condition_values": {},
+    "dependent_attribute": "Churn",
+    "expected_pattern": {
+      "determines": "No"
+    },
+    "confidence_estimate": "low",
+    "natural_language_description": "是否老年人与客户流失无强关联",
+    "status": "validated",
+    "support": 1.0,
+    "confidence": 1.0
+  }
+]

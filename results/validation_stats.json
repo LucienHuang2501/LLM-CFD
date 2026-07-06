@@ -1,0 +1,9 @@
+{
+  "total_candidates": 14,
+  "validated": 13,
+  "rejected": 1,
+  "rejection_reasons": {
+    "low_confidence": 1
+  },
+  "filter_rate": 0.07142857142857142
+}
