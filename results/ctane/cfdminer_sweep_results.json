@@ -1,0 +1,194 @@
+{
+  "description": "CFDMiner-BL hyperparameter sweep: 4x4 grid of (min_support, min_confidence)",
+  "llm_cfd_f1": 0.711,
+  "best_config": {
+    "min_support": 0.005,
+    "min_confidence": 0.95,
+    "n_candidates": 147,
+    "precision": 0.08843537414965986,
+    "recall": 0.8666666666666667,
+    "f1": 0.16049382716049385,
+    "tp": 13,
+    "fp": 134,
+    "fn": 2
+  },
+  "all_configs": [
+    {
+      "min_support": 0.005,
+      "min_confidence": 0.8,
+      "n_candidates": 177,
+      "precision": 0.07344632768361582,
+      "recall": 0.8666666666666667,
+      "f1": 0.13541666666666669,
+      "tp": 13,
+      "fp": 164,
+      "fn": 2
+    },
+    {
+      "min_support": 0.005,
+      "min_confidence": 0.85,
+      "n_candidates": 168,
+      "precision": 0.07738095238095238,
+      "recall": 0.8666666666666667,
+      "f1": 0.14207650273224043,
+      "tp": 13,
+      "fp": 155,
+      "fn": 2
+    },
+    {
+      "min_support": 0.005,
+      "min_confidence": 0.9,
+      "n_candidates": 165,
+      "precision": 0.07878787878787878,
+      "recall": 0.8666666666666667,
+      "f1": 0.14444444444444443,
+      "tp": 13,
+      "fp": 152,
+      "fn": 2
+    },
+    {
+      "min_support": 0.005,
+      "min_confidence": 0.95,
+      "n_candidates": 147,
+      "precision": 0.08843537414965986,
+      "recall": 0.8666666666666667,
+      "f1": 0.16049382716049385,
+      "tp": 13,
+      "fp": 134,
+      "fn": 2
+    },
+    {
+      "min_support": 0.01,
+      "min_confidence": 0.8,
+      "n_candidates": 177,
+      "precision": 0.07344632768361582,
+      "recall": 0.8666666666666667,
+      "f1": 0.13541666666666669,
+      "tp": 13,
+      "fp": 164,
+      "fn": 2
+    },
+    {
+      "min_support": 0.01,
+      "min_confidence": 0.85,
+      "n_candidates": 168,
+      "precision": 0.07738095238095238,
+      "recall": 0.8666666666666667,
+      "f1": 0.14207650273224043,
+      "tp": 13,
+      "fp": 155,
+      "fn": 2
+    },
+    {
+      "min_support": 0.01,
+      "min_confidence": 0.9,
+      "n_candidates": 165,
+      "precision": 0.07878787878787878,
+      "recall": 0.8666666666666667,
+      "f1": 0.14444444444444443,
+      "tp": 13,
+      "fp": 152,
+      "fn": 2
+    },
+    {
+      "min_support": 0.01,
+      "min_confidence": 0.95,
+      "n_candidates": 147,
+      "precision": 0.08843537414965986,
+      "recall": 0.8666666666666667,
+      "f1": 0.16049382716049385,
+      "tp": 13,
+      "fp": 134,
+      "fn": 2
+    },
+    {
+      "min_support": 0.02,
+      "min_confidence": 0.8,
+      "n_candidates": 177,
+      "precision": 0.07344632768361582,
+      "recall": 0.8666666666666667,
+      "f1": 0.13541666666666669,
+      "tp": 13,
+      "fp": 164,
+      "fn": 2
+    },
+    {
+      "min_support": 0.02,
+      "min_confidence": 0.85,
+      "n_candidates": 168,
+      "precision": 0.07738095238095238,
+      "recall": 0.8666666666666667,
+      "f1": 0.14207650273224043,
+      "tp": 13,
+      "fp": 155,
+      "fn": 2
+    },
+    {
+      "min_support": 0.02,
+      "min_confidence": 0.9,
+      "n_candidates": 165,
+      "precision": 0.07878787878787878,
+      "recall": 0.8666666666666667,
+      "f1": 0.14444444444444443,
+      "tp": 13,
+      "fp": 152,
+      "fn": 2
+    },
+    {
+      "min_support": 0.02,
+      "min_confidence": 0.95,
+      "n_candidates": 147,
+      "precision": 0.08843537414965986,
+      "recall": 0.8666666666666667,
+      "f1": 0.16049382716049385,
+      "tp": 13,
+      "fp": 134,
+      "fn": 2
+    },
+    {
+      "min_support": 0.05,
+      "min_confidence": 0.8,
+      "n_candidates": 177,
+      "precision": 0.07344632768361582,
+      "recall": 0.8666666666666667,
+      "f1": 0.13541666666666669,
+      "tp": 13,
+      "fp": 164,
+      "fn": 2
+    },
+    {
+      "min_support": 0.05,
+      "min_confidence": 0.85,
+      "n_candidates": 168,
+      "precision": 0.07738095238095238,
+      "recall": 0.8666666666666667,
+      "f1": 0.14207650273224043,
+      "tp": 13,
+      "fp": 155,
+      "fn": 2
+    },
+    {
+      "min_support": 0.05,
+      "min_confidence": 0.9,
+      "n_candidates": 165,
+      "precision": 0.07878787878787878,
+      "recall": 0.8666666666666667,
+      "f1": 0.14444444444444443,
+      "tp": 13,
+      "fp": 152,
+      "fn": 2
+    },
+    {
+      "min_support": 0.05,
+      "min_confidence": 0.95,
+      "n_candidates": 147,
+      "precision": 0.08843537414965986,
+      "recall": 0.8666666666666667,
+      "f1": 0.16049382716049385,
+      "tp": 13,
+      "fp": 134,
+      "fn": 2
+    }
+  ],
+  "note": "Type normalization applied (fd/enum/logic\u2192categorical, range\u2192numerical, consistency\u2192structural)"
+}

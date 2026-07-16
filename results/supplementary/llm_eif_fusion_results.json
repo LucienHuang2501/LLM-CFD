@@ -1,0 +1,13 @@
+{
+  "llm_eif_simple_auprc": 0.3232224872851691,
+  "llm_eif_weighted_auprc": 0.40569901734497155,
+  "llm_eif_intelligent_auprc": 0.3429352979681811,
+  "weights": {
+    "llm": 0.7071518876602184,
+    "eif": 0.29284811233978164
+  },
+  "individual": {
+    "llm_cfd": 0.4952581160442559,
+    "eif": 0.20509795269641615
+  }
+}

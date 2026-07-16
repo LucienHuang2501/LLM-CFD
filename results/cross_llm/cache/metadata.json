@@ -1,0 +1,30 @@
+{
+  "experiment": "Cross-LLM Validation (DeepSeek vs GLM, CoT+few-shot, temp=0.0)",
+  "models": {
+    "model_a": {
+      "name": "DeepSeek-V4-Flash",
+      "api_identifier": "deepseek-chat",
+      "provider": "DeepSeek AI",
+      "api_endpoint": "https://api.deepseek.com",
+      "n_runs": 5
+    },
+    "model_b": {
+      "name": "GLM-4.7-Flash",
+      "api_identifier": "glm-4.7-flash",
+      "provider": "Zhipu AI",
+      "api_endpoint": "https://open.bigmodel.cn/api/paas/v4",
+      "n_runs": 5
+    }
+  },
+  "call_metadata": {
+    "call_dates": "2026-07-14",
+    "temperature": 0.0,
+    "max_tokens": 4096,
+    "prompt_strategy": "cot_fewshot"
+  },
+  "reproducibility": {
+    "cache_format": "Raw JSON string of LLM response",
+    "cache_naming": "{model_identifier}_{MD5 hash}",
+    "no_api_key_needed": true
+  }
+}

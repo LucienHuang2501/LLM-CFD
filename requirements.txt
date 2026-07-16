@@ -1,0 +1,35 @@
+# LLM-CFD: LLM-Driven Conditional Functional Dependency Discovery
+# Python dependency requirements
+# Tested on Python 3.10 on Linux (Ubuntu 22.04)
+#
+# Installation:
+#   pip install -r requirements.txt
+# or with --break-system-packages flag on managed environments:
+#   pip install -r requirements.txt --break-system-packages
+
+# === Core scientific computing ===
+numpy>=1.24.0,<2.0.0
+pandas>=2.0.0,<3.0.0
+scipy>=1.10.0,<2.0.0
+
+# === Machine learning ===
+scikit-learn>=1.3.0,<2.0.0
+
+# === LLM API ===
+openai>=1.0.0,<2.0.0
+
+# === Visualization ===
+matplotlib>=3.7.0,<4.0.0
+
+# === Utilities ===
+tqdm>=4.65.0,<5.0.0
+
+# === Notes ===
+# - EIF (Extended Isolation Forest) uses sklearn's IsolationForest (no extra dependency)
+# - COPOD is implemented from scratch in experiment.py (no pyod dependency)
+# - CFDMiner uses groupby-based itemset mining (no mlxtend dependency)
+# - CTANE uses custom level-wise search (no external dependency)
+# - Random seed for anomaly injection: RANDOM_SEED=42
+# - LLM models used:
+#     DeepSeek API: model="deepseek-chat"
+#     Zhipu API:    model="glm-4.7-flash"

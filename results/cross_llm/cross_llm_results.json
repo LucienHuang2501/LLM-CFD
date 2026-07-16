@@ -1,0 +1,165 @@
+{
+  "description": "Cross-LLM comparison: DeepSeek vs GLM-4.7-Flash on Telco Churn",
+  "n_runs_per_llm": 5,
+  "deepseek": {
+    "model": "deepseek-chat",
+    "n_runs": 5,
+    "per_run": [
+      {
+        "n_candidates": 28,
+        "n_validated": 23,
+        "n_groups": 23,
+        "f1": 0.7368421052631579,
+        "precision": 0.6086956521739131,
+        "recall": 0.9333333333333333,
+        "auprc": 0.4952581160442559,
+        "has_consistency": true,
+        "has_range_tenure": true
+      },
+      {
+        "n_candidates": 28,
+        "n_validated": 23,
+        "n_groups": 23,
+        "f1": 0.7368421052631579,
+        "precision": 0.6086956521739131,
+        "recall": 0.9333333333333333,
+        "auprc": 0.4952581160442559,
+        "has_consistency": true,
+        "has_range_tenure": true
+      },
+      {
+        "n_candidates": 28,
+        "n_validated": 23,
+        "n_groups": 23,
+        "f1": 0.7368421052631579,
+        "precision": 0.6086956521739131,
+        "recall": 0.9333333333333333,
+        "auprc": 0.4952581160442559,
+        "has_consistency": true,
+        "has_range_tenure": true
+      },
+      {
+        "n_candidates": 28,
+        "n_validated": 23,
+        "n_groups": 23,
+        "f1": 0.7368421052631579,
+        "precision": 0.6086956521739131,
+        "recall": 0.9333333333333333,
+        "auprc": 0.4952581160442559,
+        "has_consistency": true,
+        "has_range_tenure": true
+      },
+      {
+        "n_candidates": 28,
+        "n_validated": 23,
+        "n_groups": 23,
+        "f1": 0.7368421052631579,
+        "precision": 0.6086956521739131,
+        "recall": 0.9333333333333333,
+        "auprc": 0.4952581160442559,
+        "has_consistency": true,
+        "has_range_tenure": true
+      }
+    ],
+    "f1_median": 0.7368421052631579,
+    "f1_iqr": 0.0,
+    "auprc_median": 0.4952581160442559,
+    "auprc_iqr": 0.0,
+    "auprc_best": 0.4952581160442559,
+    "n_runs_with_consistency": 5,
+    "auprc_eif": 0.20509795269641615,
+    "hscv": {
+      "n_voted": 23,
+      "n_validated": 23,
+      "f1": 0.7368421052631579,
+      "auprc": 0.4952581160442559,
+      "has_consistency": true
+    }
+  },
+  "glm": {
+    "model": "glm-4.7-flash",
+    "n_runs": 5,
+    "per_run": [
+      {
+        "n_candidates": 43,
+        "n_validated": 25,
+        "n_groups": 25,
+        "f1": 0.7000000000000001,
+        "precision": 0.56,
+        "recall": 0.9333333333333333,
+        "auprc": 0.49523521950242144,
+        "has_consistency": true,
+        "has_range_tenure": true
+      },
+      {
+        "n_candidates": 29,
+        "n_validated": 24,
+        "n_groups": 24,
+        "f1": 0.7179487179487181,
+        "precision": 0.5833333333333334,
+        "recall": 0.9333333333333333,
+        "auprc": 0.4952581160442559,
+        "has_consistency": true,
+        "has_range_tenure": true
+      },
+      {
+        "n_candidates": 28,
+        "n_validated": 24,
+        "n_groups": 24,
+        "f1": 0.7179487179487181,
+        "precision": 0.5833333333333334,
+        "recall": 0.9333333333333333,
+        "auprc": 0.4952581160442559,
+        "has_consistency": true,
+        "has_range_tenure": true
+      },
+      {
+        "n_candidates": 28,
+        "n_validated": 24,
+        "n_groups": 24,
+        "f1": 0.7179487179487181,
+        "precision": 0.5833333333333334,
+        "recall": 0.9333333333333333,
+        "auprc": 0.4952581160442559,
+        "has_consistency": true,
+        "has_range_tenure": true
+      },
+      {
+        "n_candidates": 28,
+        "n_validated": 23,
+        "n_groups": 23,
+        "f1": 0.7368421052631579,
+        "precision": 0.6086956521739131,
+        "recall": 0.9333333333333333,
+        "auprc": 0.532239159748791,
+        "has_consistency": true,
+        "has_range_tenure": true
+      }
+    ],
+    "f1_median": 0.7179487179487181,
+    "f1_iqr": 0.0,
+    "auprc_median": 0.4952581160442559,
+    "auprc_iqr": 0.0,
+    "auprc_best": 0.532239159748791,
+    "n_runs_with_consistency": 5,
+    "auprc_eif": 0.20509795269641615,
+    "hscv": {
+      "n_voted": 25,
+      "n_validated": 24,
+      "f1": 0.7179487179487181,
+      "auprc": 0.49523521950242144,
+      "has_consistency": true
+    }
+  },
+  "agreement": {
+    "deepseek_unique": 23,
+    "glm_unique": 25,
+    "overlap": 23,
+    "deepseek_only": 0,
+    "glm_only": 2,
+    "jaccard": 0.92,
+    "gt_coverage_deepseek": 0.9333333333333333,
+    "gt_coverage_glm": 0.9333333333333333
+  },
+  "eif_auprc": 0.20509795269641615
+}

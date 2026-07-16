@@ -1,0 +1,239 @@
+{
+  "description": "Low anomaly rate experiment: 5% injection rate vs 18% baseline",
+  "motivation": "Reviewer concern: 18% anomaly injection rate is too high. This experiment validates LLM-CFD performance at a more realistic 5% rate.",
+  "anomaly_injection_5pct": {
+    "total_rate": 0.05,
+    "dep_rate": 0.027777777777777776,
+    "range_rate": 0.013888888888888888,
+    "logic_rate": 0.008333333333333331,
+    "n_anomalies": 350,
+    "actual_rate": 0.04969473235837001,
+    "scaling_method": "Proportional: each type scaled by 5/18 to preserve type distribution"
+  },
+  "anomaly_injection_18pct_reference": {
+    "total_rate": 0.18,
+    "dep_rate": 0.1,
+    "range_rate": 0.05,
+    "logic_rate": 0.03
+  },
+  "cfd_source": "Cached CoT+few-shot LLM responses (cache_cot/, 15 runs, temp=0.0)",
+  "scoring_pipeline": "gradient (1-P(dep|condition)) + redundancy reduction + top3_mean + p99_clip",
+  "f1_threshold_method": "Top-k thresholding at known contamination rate (5%)",
+  "results_5pct": {
+    "llm_cfd": {
+      "auprc_median": 0.28489262354786626,
+      "auprc_iqr": 0.0,
+      "auprc_best": 0.28489262354786626,
+      "f1_median": 0.29195088676671216,
+      "f1_iqr": 0.0,
+      "n_runs": 15,
+      "n_validated": 23,
+      "n_groups": 23,
+      "discovery_f1": 0.7368421052631579,
+      "per_run": [
+        {
+          "n_cfd": 28,
+          "n_validated": 23,
+          "n_groups": 23,
+          "discovery_f1": 0.7368421052631579,
+          "auprc": 0.28489262354786626,
+          "f1": 0.29195088676671216,
+          "precision": 0.2793733681462141,
+          "recall": 0.3057142857142857
+        },
+        {
+          "n_cfd": 28,
+          "n_validated": 23,
+          "n_groups": 23,
+          "discovery_f1": 0.7368421052631579,
+          "auprc": 0.28489262354786626,
+          "f1": 0.29195088676671216,
+          "precision": 0.2793733681462141,
+          "recall": 0.3057142857142857
+        },
+        {
+          "n_cfd": 28,
+          "n_validated": 23,
+          "n_groups": 23,
+          "discovery_f1": 0.7368421052631579,
+          "auprc": 0.28489262354786626,
+          "f1": 0.29195088676671216,
+          "precision": 0.2793733681462141,
+          "recall": 0.3057142857142857
+        },
+        {
+          "n_cfd": 28,
+          "n_validated": 23,
+          "n_groups": 23,
+          "discovery_f1": 0.7368421052631579,
+          "auprc": 0.28489262354786626,
+          "f1": 0.29195088676671216,
+          "precision": 0.2793733681462141,
+          "recall": 0.3057142857142857
+        },
+        {
+          "n_cfd": 28,
+          "n_validated": 23,
+          "n_groups": 23,
+          "discovery_f1": 0.7368421052631579,
+          "auprc": 0.28489262354786626,
+          "f1": 0.29195088676671216,
+          "precision": 0.2793733681462141,
+          "recall": 0.3057142857142857
+        },
+        {
+          "n_cfd": 28,
+          "n_validated": 23,
+          "n_groups": 23,
+          "discovery_f1": 0.7368421052631579,
+          "auprc": 0.28489262354786626,
+          "f1": 0.29195088676671216,
+          "precision": 0.2793733681462141,
+          "recall": 0.3057142857142857
+        },
+        {
+          "n_cfd": 28,
+          "n_validated": 23,
+          "n_groups": 23,
+          "discovery_f1": 0.7368421052631579,
+          "auprc": 0.28489262354786626,
+          "f1": 0.29195088676671216,
+          "precision": 0.2793733681462141,
+          "recall": 0.3057142857142857
+        },
+        {
+          "n_cfd": 28,
+          "n_validated": 23,
+          "n_groups": 23,
+          "discovery_f1": 0.7368421052631579,
+          "auprc": 0.28489262354786626,
+          "f1": 0.29195088676671216,
+          "precision": 0.2793733681462141,
+          "recall": 0.3057142857142857
+        },
+        {
+          "n_cfd": 28,
+          "n_validated": 23,
+          "n_groups": 23,
+          "discovery_f1": 0.7368421052631579,
+          "auprc": 0.28489262354786626,
+          "f1": 0.29195088676671216,
+          "precision": 0.2793733681462141,
+          "recall": 0.3057142857142857
+        },
+        {
+          "n_cfd": 28,
+          "n_validated": 23,
+          "n_groups": 23,
+          "discovery_f1": 0.7368421052631579,
+          "auprc": 0.28489262354786626,
+          "f1": 0.29195088676671216,
+          "precision": 0.2793733681462141,
+          "recall": 0.3057142857142857
+        },
+        {
+          "n_cfd": 28,
+          "n_validated": 23,
+          "n_groups": 23,
+          "discovery_f1": 0.7368421052631579,
+          "auprc": 0.28489262354786626,
+          "f1": 0.29195088676671216,
+          "precision": 0.2793733681462141,
+          "recall": 0.3057142857142857
+        },
+        {
+          "n_cfd": 28,
+          "n_validated": 23,
+          "n_groups": 23,
+          "discovery_f1": 0.7368421052631579,
+          "auprc": 0.28489262354786626,
+          "f1": 0.29195088676671216,
+          "precision": 0.2793733681462141,
+          "recall": 0.3057142857142857
+        },
+        {
+          "n_cfd": 28,
+          "n_validated": 23,
+          "n_groups": 23,
+          "discovery_f1": 0.7368421052631579,
+          "auprc": 0.28489262354786626,
+          "f1": 0.29195088676671216,
+          "precision": 0.2793733681462141,
+          "recall": 0.3057142857142857
+        },
+        {
+          "n_cfd": 28,
+          "n_validated": 23,
+          "n_groups": 23,
+          "discovery_f1": 0.7368421052631579,
+          "auprc": 0.28489262354786626,
+          "f1": 0.29195088676671216,
+          "precision": 0.2793733681462141,
+          "recall": 0.3057142857142857
+        },
+        {
+          "n_cfd": 28,
+          "n_validated": 23,
+          "n_groups": 23,
+          "discovery_f1": 0.7368421052631579,
+          "auprc": 0.28489262354786626,
+          "f1": 0.29195088676671216,
+          "precision": 0.2793733681462141,
+          "recall": 0.3057142857142857
+        }
+      ]
+    },
+    "hscv": {
+      "auprc": 0.28489262354786626,
+      "f1": 0.29195088676671216,
+      "precision": 0.2793733681462141,
+      "recall": 0.3057142857142857,
+      "n_validated": 23,
+      "n_groups": 23,
+      "discovery_f1": 0.7368421052631579
+    },
+    "eif": {
+      "auprc": 0.06850837555165953,
+      "f1": 0.08534850640113797,
+      "precision": 0.08498583569405099,
+      "recall": 0.08571428571428572,
+      "contamination": 0.05
+    },
+    "copod": {
+      "auprc": 0.04904345004332509,
+      "f1": 0.034139402560455195,
+      "precision": 0.0339943342776204,
+      "recall": 0.03428571428571429
+    }
+  },
+  "results_18pct_reference": {
+    "llm_cfd": {
+      "auprc_median": 0.4952581160442559,
+      "auprc_best": 0.4952581160442559,
+      "f1_median": null
+    },
+    "eif": {
+      "auprc": 0.20509795269641615,
+      "f1": null
+    },
+    "copod": {
+      "auprc": 0.166652182426815,
+      "f1": null
+    }
+  },
+  "comparison": {
+    "llm_cfd_auprc_delta": -0.21036549249638964,
+    "eif_auprc_delta": -0.1365895771447566,
+    "copod_auprc_delta": -0.11760873238348993,
+    "llm_cfd_vs_eif_ratio_5pct": 4.158507937953363,
+    "llm_cfd_vs_copod_ratio_5pct": 5.8089841415355465,
+    "llm_cfd_vs_eif_ratio_18pct": 2.414739442949642,
+    "llm_cfd_vs_copod_ratio_18pct": 2.9718069624545573
+  },
+  "key_findings": [
+    "LLM-CFD maintains the best AUPRC (0.2849) at 5% anomaly rate, outperforming EIF (0.0685) and COPOD (0.0490).",
+    "LLM-CFD's advantage over EIF is preserved at 5% rate (ratio: 4.16x at 5% vs 2.41x at 18%).",
+    "At 5% rate, LLM-CFD AUPRC=0.2849 vs 18% rate AUPRC=0.4953 (delta=-0.2104).",
+    "LLM-CFD F1 at 5% rate: 0.2920 (median across 15 runs)."
+  ]
+}

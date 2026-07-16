@@ -1,0 +1,90 @@
+{
+  "bootstrap_ci": {
+    "LLM-CFD": {
+      "point_est": 0.4952581160442559,
+      "ci_low": 0.4698994100668787,
+      "ci_high": 0.5209388651566617,
+      "boot_mean": 0.4954590504767324,
+      "boot_std": 0.012931165675658994
+    },
+    "LLM-CFDMiner": {
+      "point_est": 0.4952581160442559,
+      "ci_low": 0.4682889233516509,
+      "ci_high": 0.522098830339251,
+      "boot_mean": 0.4952763365827826,
+      "boot_std": 0.013702718112959568
+    },
+    "CFDMiner": {
+      "point_est": 0.16910407496805338,
+      "ci_low": 0.16072341331818826,
+      "ci_high": 0.1770552321453926,
+      "boot_mean": 0.1691188414028113,
+      "boot_std": 0.00435210896378306
+    },
+    "LLM+COPOD(w)": {
+      "point_est": 0.3627344422253149,
+      "ci_low": 0.33488915519509593,
+      "ci_high": 0.3905340214145969,
+      "boot_mean": 0.3633228014807732,
+      "boot_std": 0.013977824392889429
+    },
+    "EIF": {
+      "point_est": 0.20509795269641615,
+      "ci_low": 0.19159197001512798,
+      "ci_high": 0.2208477843691469,
+      "boot_mean": 0.20578561379555776,
+      "boot_std": 0.007631779264182991
+    },
+    "COPOD": {
+      "point_est": 0.166652182426815,
+      "ci_low": 0.1556375740311725,
+      "ci_high": 0.179961687363063,
+      "boot_mean": 0.16732158193411295,
+      "boot_std": 0.0061669739893339594
+    },
+    "CTANE": {
+      "point_est": 0.2720678221726803,
+      "ci_low": null,
+      "ci_high": null,
+      "note": "Point estimate only (score computation requires full CTANE pipeline)"
+    }
+  },
+  "pairwise_tests": {
+    "LLM-CFDMiner": {
+      "diff": 0.0,
+      "p_value": 1.0,
+      "significant": false
+    },
+    "CFDMiner": {
+      "diff": 0.3261540410762025,
+      "p_value": 0.0001999600079984003,
+      "significant": true
+    },
+    "LLM+COPOD(w)": {
+      "diff": 0.13252367381894098,
+      "p_value": 0.0001999600079984003,
+      "significant": true
+    },
+    "EIF": {
+      "diff": 0.2901601633478398,
+      "p_value": 0.0001999600079984003,
+      "significant": true
+    },
+    "COPOD": {
+      "diff": 0.3286059336174409,
+      "p_value": 0.0001999600079984003,
+      "significant": true
+    },
+    "LLM-CFDMiner_vs_LLM-CFD": {
+      "diff": 0.0,
+      "p_value": 1.0,
+      "significant": false
+    }
+  },
+  "config": {
+    "B": 1000,
+    "n_perm": 5000,
+    "n_samples": 7043,
+    "n_anomalies": 1191
+  }
+}

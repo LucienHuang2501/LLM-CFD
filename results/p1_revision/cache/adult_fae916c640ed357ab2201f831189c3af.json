@@ -1,0 +1,157 @@
+```json
+[
+  {
+    "type": "fd",
+    "condition_attributes": [],
+    "condition_values": {},
+    "dependent_attribute": "education_num",
+    "expected_pattern": "education -> education_num",
+    "confidence_estimate": "high",
+    "natural_language_description": "教育程度（education）决定教育年限（education_num），例如HS-grad对应9，Bachelors对应13。"
+  },
+  {
+    "type": "fd",
+    "condition_attributes": [],
+    "condition_values": {},
+    "dependent_attribute": "relationship",
+    "expected_pattern": "marital_status -> relationship",
+    "confidence_estimate": "high",
+    "natural_language_description": "婚姻状况（marital_status）决定家庭关系（relationship），例如Married-civ-spouse对应Husband或Wife。"
+  },
+  {
+    "type": "fd",
+    "condition_attributes": ["marital_status"],
+    "condition_values": {"marital_status": "Never-married"},
+    "dependent_attribute": "relationship",
+    "expected_pattern": "Never-married -> Not-in-family",
+    "confidence_estimate": "high",
+    "natural_language_description": "从未结婚（Never-married）的人，其家庭关系（relationship）应为Not-in-family。"
+  },
+  {
+    "type": "fd",
+    "condition_attributes": ["marital_status"],
+    "condition_values": {"marital_status": "Married-civ-spouse"},
+    "dependent_attribute": "relationship",
+    "expected_pattern": "Married-civ-spouse -> Husband or Wife",
+    "confidence_estimate": "high",
+    "natural_language_description": "已婚（Married-civ-spouse）的人，其家庭关系（relationship）应为Husband或Wife。"
+  },
+  {
+    "type": "fd",
+    "condition_attributes": ["sex"],
+    "condition_values": {"sex": "Male"},
+    "dependent_attribute": "relationship",
+    "expected_pattern": "Male -> Husband or Not-in-family or Own-child or Unmarried",
+    "confidence_estimate": "medium",
+    "natural_language_description": "男性（Male）的家庭关系（relationship）通常为Husband、Not-in-family、Own-child或Unmarried，但不会是Wife。"
+  },
+  {
+    "type": "fd",
+    "condition_attributes": ["sex"],
+    "condition_values": {"sex": "Female"},
+    "dependent_attribute": "relationship",
+    "expected_pattern": "Female -> Wife or Not-in-family or Own-child or Unmarried",
+    "confidence_estimate": "medium",
+    "natural_language_description": "女性（Female）的家庭关系（relationship）通常为Wife、Not-in-family、Own-child或Unmarried，但不会是Husband。"
+  },
+  {
+    "type": "range",
+    "condition_attributes": [],
+    "condition_values": {},
+    "dependent_attribute": "age",
+    "expected_pattern": "age >= 17 and age <= 90",
+    "confidence_estimate": "high",
+    "natural_language_description": "年龄（age）必须在17到90岁之间。"
+  },
+  {
+    "type": "range",
+    "condition_attributes": [],
+    "condition_values": {},
+    "dependent_attribute": "hours_per_week",
+    "expected_pattern": "hours_per_week >= 1 and hours_per_week <= 99",
+    "confidence_estimate": "high",
+    "natural_language_description": "每周工作小时数（hours_per_week）必须在1到99之间。"
+  },
+  {
+    "type": "range",
+    "condition_attributes": [],
+    "condition_values": {},
+    "dependent_attribute": "capital_gain",
+    "expected_pattern": "capital_gain >= 0",
+    "confidence_estimate": "high",
+    "natural_language_description": "资本收益（capital_gain）必须大于等于0。"
+  },
+  {
+    "type": "range",
+    "condition_attributes": [],
+    "condition_values": {},
+    "dependent_attribute": "capital_loss",
+    "expected_pattern": "capital_loss >= 0",
+    "confidence_estimate": "high",
+    "natural_language_description": "资本损失（capital_loss）必须大于等于0。"
+  },
+  {
+    "type": "enum",
+    "condition_attributes": [],
+    "condition_values": {},
+    "dependent_attribute": "workclass",
+    "expected_pattern": "workclass in [Private, Self-emp-not-inc, Local-gov, State-gov, Self-emp-inc, Federal-gov, Without-pay, Never-worked]",
+    "confidence_estimate": "high",
+    "natural_language_description": "工作类别（workclass）必须是预定义的合法取值之一。"
+  },
+  {
+    "type": "enum",
+    "condition_attributes": [],
+    "condition_values": {},
+    "dependent_attribute": "race",
+    "expected_pattern": "race in [White, Black, Asian-Pac-Islander, Amer-Indian-Eskimo, Other]",
+    "confidence_estimate": "high",
+    "natural_language_description": "种族（race）必须是预定义的合法取值之一。"
+  },
+  {
+    "type": "enum",
+    "condition_attributes": [],
+    "condition_values": {},
+    "dependent_attribute": "sex",
+    "expected_pattern": "sex in [Male, Female]",
+    "confidence_estimate": "high",
+    "natural_language_description": "性别（sex）必须是Male或Female。"
+  },
+  {
+    "type": "logic",
+    "condition_attributes": ["education"],
+    "condition_values": {"education": "Prof-school"},
+    "dependent_attribute": "income",
+    "expected_pattern": "Prof-school -> >50K (high probability)",
+    "confidence_estimate": "medium",
+    "natural_language_description": "拥有专业学校学历（Prof-school）的人，其收入（income）很可能大于50K。"
+  },
+  {
+    "type": "logic",
+    "condition_attributes": ["education"],
+    "condition_values": {"education": "HS-grad"},
+    "dependent_attribute": "income",
+    "expected_pattern": "HS-grad -> <=50K (high probability)",
+    "confidence_estimate": "medium",
+    "natural_language_description": "拥有高中学历（HS-grad）的人，其收入（income）很可能小于等于50K。"
+  },
+  {
+    "type": "logic",
+    "condition_attributes": ["hours_per_week"],
+    "condition_values": {"hours_per_week": 40},
+    "dependent_attribute": "income",
+    "expected_pattern": "hours_per_week=40 -> income can be either <=50K or >50K",
+    "confidence_estimate": "low",
+    "natural_language_description": "每周工作40小时（hours_per_week=40）的人，其收入（income）可能高也可能低，没有明显规律。"
+  },
+  {
+    "type": "logic",
+    "condition_attributes": ["age", "marital_status"],
+    "condition_values": {"age": 28, "marital_status": "Never-married"},
+    "dependent_attribute": "relationship",
+    "expected_pattern": "age=28 and Never-married -> Not-in-family",
+    "confidence_estimate": "medium",
+    "natural_language_description": "28岁且从未结婚（Never-married）的人，其家庭关系（relationship）通常为Not-in-family。"
+  }
+]
+```

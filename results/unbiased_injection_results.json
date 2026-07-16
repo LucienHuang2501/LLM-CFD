@@ -1,0 +1,235 @@
+{
+  "description": "Constraint-type-agnostic anomaly injection experiment to address AUPRC information leakage",
+  "motivation": "Original 18% injection deliberately triggers range/FD/logic CFD rules, creating information leakage. New 5% injection uses constraint-type-agnostic anomalies (random replacement, missing values, type mismatch) that do not specifically target any CFD constraint type.",
+  "injection_design": {
+    "unbiased": {
+      "total_rate": "5%",
+      "type_a": "Random value replacement from same column (~1.7%)",
+      "type_b": "Missing value injection: NaN for numerical, empty string for categorical (~1.7%)",
+      "type_c": "Type mismatch: string 'TYPE_ERROR' injected into numerical columns (~1.7%)"
+    },
+    "biased_original": {
+      "total_rate": "18%",
+      "dependency_destroy": "Swap MonthlyCharges between records (10%) - targets FD rules",
+      "range_violation": "Set values to extreme percentiles (5%) - targets range rules",
+      "logic_violation": "Set tenure to negative values (3%) - targets logic rules"
+    }
+  },
+  "preprocessing": "All methods receive same preprocessed data: strings in numerical columns converted to NaN via pd.to_numeric(errors='coerce'), then imputed with median (numerical) or mode (categorical) from clean data.",
+  "scoring_pipeline": "compute_violation_matrix -> reduce_redundancy -> score_topk_mean -> apply_p99_clip",
+  "cfd_info": {
+    "n_validated": 23,
+    "f1": 0.7368421052631579,
+    "type_distribution": {
+      "enum": 16,
+      "range": 5,
+      "logic": 1,
+      "consistency": 1
+    }
+  },
+  "seeds": [
+    42,
+    123,
+    456,
+    789,
+    2024
+  ],
+  "unbiased_results": {
+    "n_anomalies_per_seed": [
+      357,
+      357,
+      357,
+      357,
+      357
+    ],
+    "type_a_per_seed": [
+      119,
+      119,
+      119,
+      119,
+      119
+    ],
+    "type_b_per_seed": [
+      119,
+      119,
+      119,
+      119,
+      119
+    ],
+    "type_c_per_seed": [
+      119,
+      119,
+      119,
+      119,
+      119
+    ],
+    "llm_cfd": {
+      "per_seed": [
+        0.08550777317826677,
+        0.09771471809028731,
+        0.11204736916605733,
+        0.10137319276994408,
+        0.08823565784154258
+      ],
+      "mean": 0.09697574220921962,
+      "std": 0.00953877334212213
+    },
+    "eif": {
+      "per_seed": [
+        0.05051631708580048,
+        0.05481123104261593,
+        0.05238243475815641,
+        0.05513872650802332,
+        0.0546512010839133
+      ],
+      "mean": 0.05349998209570188,
+      "std": 0.0017822082454910441
+    },
+    "copod": {
+      "per_seed": [
+        0.047313634391948245,
+        0.05035266733993603,
+        0.046884560530558186,
+        0.05080785889980552,
+        0.05191433226990479
+      ],
+      "mean": 0.049454610686430554,
+      "std": 0.0019938382103546794
+    }
+  },
+  "biased_results_original": {
+    "n_anomalies_per_seed": [
+      1191,
+      1189,
+      1216,
+      1202,
+      1212
+    ],
+    "llm_cfd": {
+      "per_seed": [
+        0.4952581160442559,
+        0.5153101028216807,
+        0.4989017124257789,
+        0.5203065377884935,
+        0.5101547347988952
+      ],
+      "mean": 0.5079862407758208,
+      "std": 0.009535878088570085
+    },
+    "eif": {
+      "per_seed": [
+        0.20509795269641615,
+        0.2169359700865397,
+        0.21386077448790572,
+        0.2140397362016131,
+        0.21645084092498745
+      ],
+      "mean": 0.2132770548794924,
+      "std": 0.004272720497680647
+    },
+    "copod": {
+      "per_seed": [
+        0.166652182426815,
+        0.1861016526205847,
+        0.17739040301910816,
+        0.178118109132454,
+        0.18286317498903026
+      ],
+      "mean": 0.17822510443759843,
+      "std": 0.006605942900752193
+    }
+  },
+  "per_type_analysis": {
+    "A": {
+      "llm_cfd_recall_at_5pct": 0.15126050420168066,
+      "eif_recall_at_5pct": 0.07563025210084033,
+      "copod_recall_at_5pct": 0.03361344537815126,
+      "n_anomalies": 119,
+      "llm_cfd_auprc": 0.02709859365080757,
+      "eif_auprc": 0.01900083194028193,
+      "copod_auprc": 0.01772744759923741,
+      "random_baseline": 0.016896209001845804
+    },
+    "B": {
+      "llm_cfd_recall_at_5pct": 0.10084033613445378,
+      "eif_recall_at_5pct": 0.03361344537815126,
+      "copod_recall_at_5pct": 0.01680672268907563,
+      "n_anomalies": 119,
+      "llm_cfd_auprc": 0.01999693732442069,
+      "eif_auprc": 0.016675402665308307,
+      "copod_auprc": 0.014096929486532822,
+      "random_baseline": 0.016896209001845804
+    },
+    "C": {
+      "llm_cfd_recall_at_5pct": 0.20168067226890757,
+      "eif_recall_at_5pct": 0.04201680672268908,
+      "copod_recall_at_5pct": 0.06722689075630252,
+      "n_anomalies": 119,
+      "llm_cfd_auprc": 0.04290607276792559,
+      "eif_auprc": 0.016083179435800864,
+      "copod_auprc": 0.01703387171000908,
+      "random_baseline": 0.016896209001845804
+    }
+  },
+  "comparison": {
+    "llm_cfd_drop_pct": 80.90976990614675,
+    "eif_drop_pct": 74.91526590803174,
+    "copod_drop_pct": 72.25160235282904,
+    "note": "Negative drop means the method performed BETTER on unbiased injection. LLM-CFD is expected to show the largest drop, confirming information leakage."
+  },
+  "lift_analysis": {
+    "random_baseline_unbiased": 0.05068862700553741,
+    "random_baseline_biased": 0.17066590941360216,
+    "per_method": {
+      "llm_cfd": {
+        "biased_lift": 2.97649508634285,
+        "unbiased_lift": 1.9131656929398706,
+        "lift_drop_pct": 35.72421128063972
+      },
+      "eif": {
+        "biased_lift": 1.2496757882830822,
+        "unbiased_lift": 1.0554632322129645,
+        "lift_drop_pct": 15.541035354213317
+      },
+      "copod": {
+        "biased_lift": 1.044292354870221,
+        "unbiased_lift": 0.9756549665673121,
+        "lift_drop_pct": 6.5726219274523725
+      }
+    },
+    "per_type": {
+      "A": {
+        "llm_cfd": 1.6038268494339305,
+        "eif": 1.1245618433227365,
+        "copod": 1.0491967516086478
+      },
+      "B": {
+        "llm_cfd": 1.1835162149234868,
+        "eif": 0.9869316048047598,
+        "copod": 0.8343249947365603
+      },
+      "C": {
+        "llm_cfd": 2.539390508441176,
+        "eif": 0.9518809476163487,
+        "copod": 1.0081475500302013
+      }
+    }
+  },
+  "relative_advantage": {
+    "llm_cfd_over_eif": {
+      "biased": 2.3818138386374823,
+      "unbiased": 1.8126313021142213
+    },
+    "llm_cfd_over_copod": {
+      "biased": 2.850250767863519,
+      "unbiased": 1.960903965539213
+    }
+  },
+  "key_findings": {
+    "finding_1": "LLM-CFD AUPRC dropped from 0.5080 (biased 18%) to 0.0970 (unbiased 5%), a 80.9% drop. This is the largest drop among all methods, confirming information leakage.",
+    "finding_2": "LLM-CFD lift over random dropped from 2.98x to 1.91x, while EIF dropped from 1.25x to 1.06x. LLM-CFD had the largest lift drop (35.7%).",
+    "finding_3": "LLM-CFD relative advantage over EIF decreased from 2.38x to 1.81x; over COPOD from 2.85x to 1.96x.",
+    "finding_4": "Per-type analysis: LLM-CFD performs best on Type C (type mismatch, lift=2.54x) because imputed values can break consistency constraints. All methods struggle with Type B (missing values).",
+    "finding_5": "Under unbiased injection, all methods perform close to random (lift < 2x). LLM-CFD retains a small advantage (1.91x) over EIF (1.06x) and COPOD (0.98x), suggesting some genuine detection capability beyond information leakage."
+  }
+}

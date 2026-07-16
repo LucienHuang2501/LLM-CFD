@@ -1,0 +1,13 @@
+{
+  "llm_cfd_auprc": 0.4952581160442559,
+  "cfdminer_auprc": 0.3866610904729094,
+  "rule_union_auprc": 0.3866610904729094,
+  "llm_filtered_auprc": 0.5594836846096407,
+  "score_weighted_auprc": 0.5605740624062697,
+  "score_simple_auprc": 0.5614419206449235,
+  "llm_cfd_n_rules": 23,
+  "cfdminer_n_rules": 7755,
+  "union_n_rules": 7765,
+  "filtered_n_rules": 4183,
+  "n_approved_novel": 4160
+}

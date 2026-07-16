@@ -1,0 +1,13 @@
+{
+  "llm_copod_simple_auprc": 0.30891781637250165,
+  "llm_copod_weighted_auprc": 0.4372258391237643,
+  "llm_copod_intelligent_auprc": 0.32990216730178623,
+  "weights": {
+    "llm": 0.7482254275061734,
+    "copod": 0.2517745724938265
+  },
+  "individual": {
+    "llm_cfd": 0.4952581160442559,
+    "copod": 0.166652182426815
+  }
+}

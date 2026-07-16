@@ -1,0 +1,156 @@
+{
+  "description": "Unified pipeline: all methods under same anomaly injection + gradient scoring + redundancy reduction + top3_mean",
+  "anomaly_injection": "semantic (dependency destroy 10% + 4sigma range 5% + negative tenure logic 3%)",
+  "scoring": "gradient (1-P(dep|condition)) + redundancy reduction + top3_mean + p99_clip",
+  "individual_runs": {
+    "f1_median": 0.7368421052631579,
+    "f1_iqr": 0.0,
+    "auprc_median": 0.4952581160442559,
+    "auprc_iqr": 0.0,
+    "auprc_best": 0.4952581160442559,
+    "per_run": [
+      {
+        "n_cfd": 28,
+        "n_validated": 23,
+        "n_groups": 23,
+        "f1": 0.7368421052631579,
+        "auprc": 0.4952581160442559,
+        "has_consistency": true
+      },
+      {
+        "n_cfd": 28,
+        "n_validated": 23,
+        "n_groups": 23,
+        "f1": 0.7368421052631579,
+        "auprc": 0.4952581160442559,
+        "has_consistency": true
+      },
+      {
+        "n_cfd": 28,
+        "n_validated": 23,
+        "n_groups": 23,
+        "f1": 0.7368421052631579,
+        "auprc": 0.4952581160442559,
+        "has_consistency": true
+      },
+      {
+        "n_cfd": 28,
+        "n_validated": 23,
+        "n_groups": 23,
+        "f1": 0.7368421052631579,
+        "auprc": 0.4952581160442559,
+        "has_consistency": true
+      },
+      {
+        "n_cfd": 28,
+        "n_validated": 23,
+        "n_groups": 23,
+        "f1": 0.7368421052631579,
+        "auprc": 0.4952581160442559,
+        "has_consistency": true
+      },
+      {
+        "n_cfd": 28,
+        "n_validated": 23,
+        "n_groups": 23,
+        "f1": 0.7368421052631579,
+        "auprc": 0.4952581160442559,
+        "has_consistency": true
+      },
+      {
+        "n_cfd": 28,
+        "n_validated": 23,
+        "n_groups": 23,
+        "f1": 0.7368421052631579,
+        "auprc": 0.4952581160442559,
+        "has_consistency": true
+      },
+      {
+        "n_cfd": 28,
+        "n_validated": 23,
+        "n_groups": 23,
+        "f1": 0.7368421052631579,
+        "auprc": 0.4952581160442559,
+        "has_consistency": true
+      },
+      {
+        "n_cfd": 28,
+        "n_validated": 23,
+        "n_groups": 23,
+        "f1": 0.7368421052631579,
+        "auprc": 0.4952581160442559,
+        "has_consistency": true
+      },
+      {
+        "n_cfd": 28,
+        "n_validated": 23,
+        "n_groups": 23,
+        "f1": 0.7368421052631579,
+        "auprc": 0.4952581160442559,
+        "has_consistency": true
+      },
+      {
+        "n_cfd": 28,
+        "n_validated": 23,
+        "n_groups": 23,
+        "f1": 0.7368421052631579,
+        "auprc": 0.4952581160442559,
+        "has_consistency": true
+      },
+      {
+        "n_cfd": 28,
+        "n_validated": 23,
+        "n_groups": 23,
+        "f1": 0.7368421052631579,
+        "auprc": 0.4952581160442559,
+        "has_consistency": true
+      },
+      {
+        "n_cfd": 28,
+        "n_validated": 23,
+        "n_groups": 23,
+        "f1": 0.7368421052631579,
+        "auprc": 0.4952581160442559,
+        "has_consistency": true
+      },
+      {
+        "n_cfd": 28,
+        "n_validated": 23,
+        "n_groups": 23,
+        "f1": 0.7368421052631579,
+        "auprc": 0.4952581160442559,
+        "has_consistency": true
+      },
+      {
+        "n_cfd": 28,
+        "n_validated": 23,
+        "n_groups": 23,
+        "f1": 0.7368421052631579,
+        "auprc": 0.4952581160442559,
+        "has_consistency": true
+      }
+    ]
+  },
+  "hscv_fixed": {
+    "n_voted": 23,
+    "n_validated": 23,
+    "n_groups": 23,
+    "f1": 0.7368421052631579,
+    "auprc": 0.4952581160442559,
+    "has_consistency": true
+  },
+  "baselines": {
+    "eif_auprc": 0.20509795269641615,
+    "copod_auprc": 0.166652182426815
+  },
+  "fusion": {
+    "llm_cfd_best_copod_auprc": 0.30891781637250165,
+    "hscv_copod_auprc": 0.30891781637250165
+  },
+  "cfdminer_bl": {
+    "f1": 0.16049382716049385,
+    "precision": 0.08843537414965986,
+    "recall": 0.8666666666666667,
+    "n_candidates": 147
+  }
+}

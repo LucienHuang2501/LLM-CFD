@@ -1,0 +1,15 @@
+{
+  "method": "LLM-CFD+EIF+COPOD (LLM-guided intelligent fusion)",
+  "auprc": 0.3837499098528334,
+  "f1": 0.37037037037037035,
+  "n_candidates": 771,
+  "n_llm_scored": 771,
+  "n_true_anomalies_in_candidates": 304,
+  "simple_average_auprc": 0.27377938929508394,
+  "improvement_over_simple": 0.10997052055774947,
+  "individual_auprc": {
+    "llm_cfd": 0.4952581160442559,
+    "eif": 0.20509795269641615,
+    "copod": 0.166652182426815
+  }
+}

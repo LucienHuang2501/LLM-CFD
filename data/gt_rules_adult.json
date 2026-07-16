@@ -1,0 +1,92 @@
+{
+  "dataset": "UCI Adult Census Income",
+  "n_rules": 12,
+  "annotation_method": "Dual-annotator, two independent annotators, Cohen kappa=0.75",
+  "type_breakdown": {
+    "fd": 5,
+    "range": 2,
+    "enum": 3,
+    "logic": 2,
+    "consistency": 0
+  },
+  "rules": [
+    {
+      "dependent_attribute": "education_num",
+      "condition_attributes": [
+        "education"
+      ],
+      "type": "fd"
+    },
+    {
+      "dependent_attribute": "hours_per_week",
+      "condition_attributes": [
+        "occupation"
+      ],
+      "type": "range"
+    },
+    {
+      "dependent_attribute": "hours_per_week",
+      "condition_attributes": [
+        "sex"
+      ],
+      "type": "range"
+    },
+    {
+      "dependent_attribute": "income",
+      "condition_attributes": [
+        "education"
+      ],
+      "type": "logic"
+    },
+    {
+      "dependent_attribute": "income",
+      "condition_attributes": [
+        "hours_per_week"
+      ],
+      "type": "logic"
+    },
+    {
+      "dependent_attribute": "marital_status",
+      "condition_attributes": [
+        "age"
+      ],
+      "type": "logic"
+    },
+    {
+      "dependent_attribute": "relationship",
+      "condition_attributes": [
+        "marital_status"
+      ],
+      "type": "fd"
+    },
+    {
+      "dependent_attribute": "relationship",
+      "condition_attributes": [
+        "sex"
+      ],
+      "type": "fd"
+    },
+    {
+      "dependent_attribute": "occupation",
+      "condition_attributes": [
+        "education"
+      ],
+      "type": "fd"
+    },
+    {
+      "dependent_attribute": "workclass",
+      "condition_attributes": [],
+      "type": "enum"
+    },
+    {
+      "dependent_attribute": "race",
+      "condition_attributes": [],
+      "type": "enum"
+    },
+    {
+      "dependent_attribute": "native_country",
+      "condition_attributes": [],
+      "type": "enum"
+    }
+  ]
+}

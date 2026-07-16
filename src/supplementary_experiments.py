@@ -30,8 +30,8 @@ warnings.filterwarnings('ignore')
 # CONFIGURATION
 # ============================================================
 
-DATA_PATH = "/Users/hzy/.qoderworkcn/workspace/mqw7dr6nxdtvfujn/experiments/data/telco_churn.csv"
-RESULTS_PATH = "/Users/hzy/.qoderworkcn/workspace/mqw7dr6nxdtvfujn/experiments/results/supplementary"
+DATA_PATH = "/sessions/69e790d3616697199023cd0a/workspace/mqw7dr6nxdtvfujn/experiments/data/telco_churn.csv"
+RESULTS_PATH = "/sessions/69e790d3616697199023cd0a/workspace/mqw7dr6nxdtvfujn/experiments/results/supplementary"
 CACHE_PATH = os.path.join(RESULTS_PATH, "cache")
 
 DEEPSEEK_API_KEY = os.environ.get("DEEPSEEK_API_KEY", "")
@@ -214,11 +214,15 @@ def validate_cfd(df, cfd):
 
 
 def evaluate_cfds(df, validated_cfds, ground_truth_cfds):
-    """Evaluate discovered CFDs against ground truth."""
+    """Evaluate discovered CFDs against ground truth with type normalization."""
+    TYPE_MAP = {'fd': 'categorical', 'enum': 'categorical', 'logic': 'categorical',
+                'range': 'numerical', 'consistency': 'structural'}
     def cfd_key(c):
+        raw_type = c.get("type", "fd")
+        normalized_type = TYPE_MAP.get(raw_type, raw_type)
         return (c.get("dependent_attribute", ""),
                 tuple(sorted(c.get("condition_attributes", []))),
-                c.get("type", "fd"))
+                normalized_type)
 
     gt_keys = set(cfd_key(c) for c in ground_truth_cfds)
     disc_keys = set(cfd_key(c["cfd"]) for c in validated_cfds if c["passed"])

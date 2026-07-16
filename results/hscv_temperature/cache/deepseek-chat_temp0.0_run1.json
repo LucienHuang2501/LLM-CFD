@@ -1,0 +1,184 @@
+```json
+[
+  {
+    "type": "enum",
+    "condition_attributes": ["InternetService"],
+    "condition_values": {"InternetService": "No"},
+    "dependent_attribute": "OnlineSecurity",
+    "expected_pattern": {"values": ["No internet service"]},
+    "confidence_estimate": "high",
+    "natural_language_description": "无网络服务时，在线安全必须为无互联网服务"
+  },
+  {
+    "type": "enum",
+    "condition_attributes": ["InternetService"],
+    "condition_values": {"InternetService": "No"},
+    "dependent_attribute": "OnlineBackup",
+    "expected_pattern": {"values": ["No internet service"]},
+    "confidence_estimate": "high",
+    "natural_language_description": "无网络服务时，在线备份必须为无互联网服务"
+  },
+  {
+    "type": "enum",
+    "condition_attributes": ["InternetService"],
+    "condition_values": {"InternetService": "No"},
+    "dependent_attribute": "DeviceProtection",
+    "expected_pattern": {"values": ["No internet service"]},
+    "confidence_estimate": "high",
+    "natural_language_description": "无网络服务时，设备保护必须为无互联网服务"
+  },
+  {
+    "type": "enum",
+    "condition_attributes": ["InternetService"],
+    "condition_values": {"InternetService": "No"},
+    "dependent_attribute": "TechSupport",
+    "expected_pattern": {"values": ["No internet service"]},
+    "confidence_estimate": "high",
+    "natural_language_description": "无网络服务时，技术支持必须为无互联网服务"
+  },
+  {
+    "type": "enum",
+    "condition_attributes": ["InternetService"],
+    "condition_values": {"InternetService": "No"},
+    "dependent_attribute": "StreamingTV",
+    "expected_pattern": {"values": ["No internet service"]},
+    "confidence_estimate": "high",
+    "natural_language_description": "无网络服务时，流媒体电视必须为无互联网服务"
+  },
+  {
+    "type": "enum",
+    "condition_attributes": ["InternetService"],
+    "condition_values": {"InternetService": "No"},
+    "dependent_attribute": "StreamingMovies",
+    "expected_pattern": {"values": ["No internet service"]},
+    "confidence_estimate": "high",
+    "natural_language_description": "无网络服务时，流媒体电影必须为无互联网服务"
+  },
+  {
+    "type": "enum",
+    "condition_attributes": ["PhoneService"],
+    "condition_values": {"PhoneService": "No"},
+    "dependent_attribute": "MultipleLines",
+    "expected_pattern": {"values": ["No phone service"]},
+    "confidence_estimate": "high",
+    "natural_language_description": "无电话服务时，多线路必须为无电话服务"
+  },
+  {
+    "type": "range",
+    "condition_attributes": ["Contract"],
+    "condition_values": {"Contract": "Two year"},
+    "dependent_attribute": "MonthlyCharges",
+    "expected_pattern": {"min": 50, "max": 120},
+    "confidence_estimate": "medium",
+    "natural_language_description": "两年期合同月消费通常在50-120之间"
+  },
+  {
+    "type": "range",
+    "condition_attributes": ["Contract"],
+    "condition_values": {"Contract": "One year"},
+    "dependent_attribute": "MonthlyCharges",
+    "expected_pattern": {"min": 30, "max": 110},
+    "confidence_estimate": "medium",
+    "natural_language_description": "一年期合同月消费通常在30-110之间"
+  },
+  {
+    "type": "range",
+    "condition_attributes": ["Contract"],
+    "condition_values": {"Contract": "Month-to-month"},
+    "dependent_attribute": "MonthlyCharges",
+    "expected_pattern": {"min": 18, "max": 100},
+    "confidence_estimate": "medium",
+    "natural_language_description": "月付合同月消费通常在18-100之间"
+  },
+  {
+    "type": "logic",
+    "condition_attributes": ["tenure"],
+    "condition_values": {},
+    "dependent_attribute": "Churn",
+    "expected_pattern": {"expression": "tenure>24→Churn='No'"},
+    "confidence_estimate": "medium",
+    "natural_language_description": "长期客户（在网超过24个月）流失率较低"
+  },
+  {
+    "type": "logic",
+    "condition_attributes": ["tenure"],
+    "condition_values": {},
+    "dependent_attribute": "Churn",
+    "expected_pattern": {"expression": "tenure<6→Churn='Yes'"},
+    "confidence_estimate": "medium",
+    "natural_language_description": "短期客户（在网不足6个月）流失率较高"
+  },
+  {
+    "type": "fd",
+    "condition_attributes": ["gender"],
+    "condition_values": {},
+    "dependent_attribute": "SeniorCitizen",
+    "expected_pattern": {"expression": "gender→SeniorCitizen"},
+    "confidence_estimate": "low",
+    "natural_language_description": "性别与是否老年人无直接函数依赖关系"
+  },
+  {
+    "type": "fd",
+    "condition_attributes": ["Partner", "Dependents"],
+    "condition_values": {},
+    "dependent_attribute": "Churn",
+    "expected_pattern": {"expression": "Partner,Dependents→Churn"},
+    "confidence_estimate": "low",
+    "natural_language_description": "伴侣和家属信息不能唯一确定流失状态"
+  },
+  {
+    "type": "range",
+    "condition_attributes": ["InternetService"],
+    "condition_values": {"InternetService": "Fiber optic"},
+    "dependent_attribute": "MonthlyCharges",
+    "expected_pattern": {"min": 60, "max": 120},
+    "confidence_estimate": "medium",
+    "natural_language_description": "光纤网络用户月消费通常在60-120之间"
+  },
+  {
+    "type": "range",
+    "condition_attributes": ["InternetService"],
+    "condition_values": {"InternetService": "DSL"},
+    "dependent_attribute": "MonthlyCharges",
+    "expected_pattern": {"min": 20, "max": 80},
+    "confidence_estimate": "medium",
+    "natural_language_description": "DSL网络用户月消费通常在20-80之间"
+  },
+  {
+    "type": "enum",
+    "condition_attributes": ["InternetService"],
+    "condition_values": {"InternetService": "No"},
+    "dependent_attribute": "MonthlyCharges",
+    "expected_pattern": {"values": ["18.0", "25.0"]},
+    "confidence_estimate": "low",
+    "natural_language_description": "无网络服务时月消费较低，通常在18-25之间"
+  },
+  {
+    "type": "logic",
+    "condition_attributes": ["Contract", "tenure"],
+    "condition_values": {},
+    "dependent_attribute": "Churn",
+    "expected_pattern": {"expression": "Contract='Month-to-month' AND tenure<12→Churn='Yes'"},
+    "confidence_estimate": "medium",
+    "natural_language_description": "月付合同且在网不足一年的客户流失率较高"
+  },
+  {
+    "type": "logic",
+    "condition_attributes": ["Contract", "tenure"],
+    "condition_values": {},
+    "dependent_attribute": "Churn",
+    "expected_pattern": {"expression": "Contract='Two year' AND tenure>12→Churn='No'"},
+    "confidence_estimate": "medium",
+    "natural_language_description": "两年期合同且在网超过一年的客户流失率较低"
+  },
+  {
+    "type": "range",
+    "condition_attributes": ["SeniorCitizen"],
+    "condition_values": {"SeniorCitizen": "1"},
+    "dependent_attribute": "MonthlyCharges",
+    "expected_pattern": {"min": 30, "max": 100},
+    "confidence_estimate": "low",
+    "natural_language_description": "老年客户月消费通常在30-100之间"
+  }
+]
+```

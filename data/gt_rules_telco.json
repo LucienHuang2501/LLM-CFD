@@ -1,0 +1,108 @@
+{
+  "dataset": "Telco Customer Churn",
+  "n_rules": 15,
+  "annotation_method": "Dual-annotator, two independent annotators, Cohen kappa=0.82",
+  "type_breakdown": {
+    "fd": 7,
+    "range": 2,
+    "enum": 4,
+    "logic": 1,
+    "consistency": 1
+  },
+  "rules": [
+    {
+      "dependent_attribute": "OnlineSecurity",
+      "condition_attributes": [
+        "InternetService"
+      ],
+      "type": "fd"
+    },
+    {
+      "dependent_attribute": "OnlineBackup",
+      "condition_attributes": [
+        "InternetService"
+      ],
+      "type": "fd"
+    },
+    {
+      "dependent_attribute": "DeviceProtection",
+      "condition_attributes": [
+        "InternetService"
+      ],
+      "type": "fd"
+    },
+    {
+      "dependent_attribute": "TechSupport",
+      "condition_attributes": [
+        "InternetService"
+      ],
+      "type": "fd"
+    },
+    {
+      "dependent_attribute": "StreamingTV",
+      "condition_attributes": [
+        "InternetService"
+      ],
+      "type": "fd"
+    },
+    {
+      "dependent_attribute": "StreamingMovies",
+      "condition_attributes": [
+        "InternetService"
+      ],
+      "type": "fd"
+    },
+    {
+      "dependent_attribute": "MultipleLines",
+      "condition_attributes": [
+        "PhoneService"
+      ],
+      "type": "fd"
+    },
+    {
+      "dependent_attribute": "MonthlyCharges",
+      "condition_attributes": [
+        "Contract"
+      ],
+      "type": "range"
+    },
+    {
+      "dependent_attribute": "MonthlyCharges",
+      "condition_attributes": [],
+      "type": "range"
+    },
+    {
+      "dependent_attribute": "SeniorCitizen",
+      "condition_attributes": [],
+      "type": "enum"
+    },
+    {
+      "dependent_attribute": "gender",
+      "condition_attributes": [],
+      "type": "enum"
+    },
+    {
+      "dependent_attribute": "Partner",
+      "condition_attributes": [],
+      "type": "enum"
+    },
+    {
+      "dependent_attribute": "Dependents",
+      "condition_attributes": [],
+      "type": "enum"
+    },
+    {
+      "dependent_attribute": "tenure",
+      "condition_attributes": [],
+      "type": "logic"
+    },
+    {
+      "dependent_attribute": "TotalCharges",
+      "condition_attributes": [
+        "tenure",
+        "MonthlyCharges"
+      ],
+      "type": "consistency"
+    }
+  ]
+}

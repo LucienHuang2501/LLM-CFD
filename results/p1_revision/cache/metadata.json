@@ -1,0 +1,26 @@
+{
+  "experiment": "LLM-CFD Adult Dataset (10 runs)",
+  "model": {
+    "name": "DeepSeek-V4-Flash",
+    "api_identifier": "deepseek-chat",
+    "provider": "DeepSeek AI",
+    "api_endpoint": "https://api.deepseek.com",
+    "api_protocol": "OpenAI-compatible"
+  },
+  "call_metadata": {
+    "call_dates": "2026-06-10 to 2026-06-15",
+    "temperature": 0.0,
+    "max_tokens": 4096,
+    "prompt_strategy": "few_shot (Adult-specific prompt)",
+    "n_runs": 10,
+    "n_cache_files": 10
+  },
+  "cache_files": {
+    "naming_convention": "adult_{md5_hash}.json",
+    "content": "Raw JSON string of LLM response"
+  },
+  "reproducibility": {
+    "no_api_key_needed": true,
+    "note": "Cached responses allow full reproducibility without additional API calls."
+  }
+}

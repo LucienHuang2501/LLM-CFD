@@ -1,0 +1,22 @@
+{
+  "description": "Control experiment: semantic vs non-semantic anomaly detection",
+  "semantic_anomalies": {
+    "n_anomalies": 1198,
+    "rate": 0.17009796961522078,
+    "llm_cfd_auprc": 0.5895852327763669,
+    "eif_auprc": 0.21332481125412256,
+    "copod_auprc": 0.1891759250315473
+  },
+  "non_semantic_anomalies": {
+    "n_anomalies": 1086,
+    "rate": 0.15419565526054238,
+    "llm_cfd_auprc": 0.5031845475572365,
+    "eif_auprc": 0.19436941906163324,
+    "copod_auprc": 0.15789271443626265
+  },
+  "performance_drop": {
+    "llm_cfd": 14.65448597012311,
+    "eif": 8.885695049278052
+  },
+  "key_finding": "LLM-CFD excels at semantic violations but underperforms on in-range distributional anomalies, validating the complementarity of semantic and statistical approaches."
+}

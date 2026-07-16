@@ -1,0 +1,376 @@
+{
+  "description": "CFDMiner-BL hyperparameter sweep on Telco Churn dataset. Includes best config metrics, per-constraint-type recall breakdown, and comparison with CTANE.",
+  "dataset": "telco_churn",
+  "data_shape": [
+    7043,
+    20
+  ],
+  "ground_truth_count": 15,
+  "llm_cfd_f1_reference": 0.711,
+  "best_config": {
+    "min_support": 0.005,
+    "min_confidence": 0.95,
+    "n_candidates": 147,
+    "precision": 0.08843537414965986,
+    "recall": 0.8666666666666667,
+    "f1": 0.16049382716049385,
+    "tp": 13,
+    "fp": 134,
+    "fn": 2,
+    "hits": 13
+  },
+  "per_constraint_type_recall": {
+    "fd": {
+      "normalized_type": "categorical",
+      "total": 7,
+      "hit": 7,
+      "recall": 1.0
+    },
+    "range": {
+      "normalized_type": "numerical",
+      "total": 2,
+      "hit": 2,
+      "recall": 1.0
+    },
+    "enum": {
+      "normalized_type": "categorical",
+      "total": 4,
+      "hit": 3,
+      "recall": 0.75
+    },
+    "logic": {
+      "normalized_type": "categorical",
+      "total": 1,
+      "hit": 0,
+      "recall": 0.0
+    },
+    "consistency": {
+      "normalized_type": "structural",
+      "total": 1,
+      "hit": 1,
+      "recall": 1.0
+    }
+  },
+  "matched_ground_truth": [
+    {
+      "dependent_attribute": "OnlineSecurity",
+      "condition_attributes": [
+        "InternetService"
+      ],
+      "type": "fd",
+      "hit": true
+    },
+    {
+      "dependent_attribute": "OnlineBackup",
+      "condition_attributes": [
+        "InternetService"
+      ],
+      "type": "fd",
+      "hit": true
+    },
+    {
+      "dependent_attribute": "DeviceProtection",
+      "condition_attributes": [
+        "InternetService"
+      ],
+      "type": "fd",
+      "hit": true
+    },
+    {
+      "dependent_attribute": "TechSupport",
+      "condition_attributes": [
+        "InternetService"
+      ],
+      "type": "fd",
+      "hit": true
+    },
+    {
+      "dependent_attribute": "StreamingTV",
+      "condition_attributes": [
+        "InternetService"
+      ],
+      "type": "fd",
+      "hit": true
+    },
+    {
+      "dependent_attribute": "StreamingMovies",
+      "condition_attributes": [
+        "InternetService"
+      ],
+      "type": "fd",
+      "hit": true
+    },
+    {
+      "dependent_attribute": "MultipleLines",
+      "condition_attributes": [
+        "PhoneService"
+      ],
+      "type": "fd",
+      "hit": true
+    },
+    {
+      "dependent_attribute": "MonthlyCharges",
+      "condition_attributes": [
+        "Contract"
+      ],
+      "type": "range",
+      "hit": true
+    },
+    {
+      "dependent_attribute": "MonthlyCharges",
+      "condition_attributes": [],
+      "type": "range",
+      "hit": true
+    },
+    {
+      "dependent_attribute": "gender",
+      "condition_attributes": [],
+      "type": "enum",
+      "hit": true
+    },
+    {
+      "dependent_attribute": "Partner",
+      "condition_attributes": [],
+      "type": "enum",
+      "hit": true
+    },
+    {
+      "dependent_attribute": "Dependents",
+      "condition_attributes": [],
+      "type": "enum",
+      "hit": true
+    },
+    {
+      "dependent_attribute": "TotalCharges",
+      "condition_attributes": [
+        "tenure",
+        "MonthlyCharges"
+      ],
+      "type": "consistency",
+      "hit": true
+    }
+  ],
+  "missed_ground_truth": [
+    {
+      "dependent_attribute": "SeniorCitizen",
+      "condition_attributes": [],
+      "type": "enum",
+      "hit": false
+    },
+    {
+      "dependent_attribute": "tenure",
+      "condition_attributes": [],
+      "type": "logic",
+      "hit": false
+    }
+  ],
+  "ctane_comparison": {
+    "ctane_best_config": {
+      "min_support": 0.05,
+      "min_confidence": 0.95,
+      "n_candidates": 856,
+      "precision": 0.014018691588785047,
+      "recall": 0.8,
+      "f1": 0.027554535017221587,
+      "tp": 12,
+      "fp": 844,
+      "fn": 3,
+      "hits": 12
+    },
+    "cfdminer_best": {
+      "min_support": 0.005,
+      "min_confidence": 0.95,
+      "n_candidates": 147,
+      "precision": 0.08843537414965986,
+      "recall": 0.8666666666666667,
+      "f1": 0.16049382716049385,
+      "tp": 13,
+      "fp": 134,
+      "fn": 2,
+      "hits": 13
+    },
+    "f1_improvement_ratio": 5.82,
+    "extra_hits_vs_ctane": 1,
+    "recall_delta": 0.0667,
+    "precision_delta": 0.0744
+  },
+  "all_configs": [
+    {
+      "min_support": 0.005,
+      "min_confidence": 0.8,
+      "n_candidates": 177,
+      "precision": 0.07344632768361582,
+      "recall": 0.8666666666666667,
+      "f1": 0.13541666666666669,
+      "tp": 13,
+      "fp": 164,
+      "fn": 2
+    },
+    {
+      "min_support": 0.005,
+      "min_confidence": 0.85,
+      "n_candidates": 168,
+      "precision": 0.07738095238095238,
+      "recall": 0.8666666666666667,
+      "f1": 0.14207650273224043,
+      "tp": 13,
+      "fp": 155,
+      "fn": 2
+    },
+    {
+      "min_support": 0.005,
+      "min_confidence": 0.9,
+      "n_candidates": 165,
+      "precision": 0.07878787878787878,
+      "recall": 0.8666666666666667,
+      "f1": 0.14444444444444443,
+      "tp": 13,
+      "fp": 152,
+      "fn": 2
+    },
+    {
+      "min_support": 0.005,
+      "min_confidence": 0.95,
+      "n_candidates": 147,
+      "precision": 0.08843537414965986,
+      "recall": 0.8666666666666667,
+      "f1": 0.16049382716049385,
+      "tp": 13,
+      "fp": 134,
+      "fn": 2
+    },
+    {
+      "min_support": 0.01,
+      "min_confidence": 0.8,
+      "n_candidates": 177,
+      "precision": 0.07344632768361582,
+      "recall": 0.8666666666666667,
+      "f1": 0.13541666666666669,
+      "tp": 13,
+      "fp": 164,
+      "fn": 2
+    },
+    {
+      "min_support": 0.01,
+      "min_confidence": 0.85,
+      "n_candidates": 168,
+      "precision": 0.07738095238095238,
+      "recall": 0.8666666666666667,
+      "f1": 0.14207650273224043,
+      "tp": 13,
+      "fp": 155,
+      "fn": 2
+    },
+    {
+      "min_support": 0.01,
+      "min_confidence": 0.9,
+      "n_candidates": 165,
+      "precision": 0.07878787878787878,
+      "recall": 0.8666666666666667,
+      "f1": 0.14444444444444443,
+      "tp": 13,
+      "fp": 152,
+      "fn": 2
+    },
+    {
+      "min_support": 0.01,
+      "min_confidence": 0.95,
+      "n_candidates": 147,
+      "precision": 0.08843537414965986,
+      "recall": 0.8666666666666667,
+      "f1": 0.16049382716049385,
+      "tp": 13,
+      "fp": 134,
+      "fn": 2
+    },
+    {
+      "min_support": 0.02,
+      "min_confidence": 0.8,
+      "n_candidates": 177,
+      "precision": 0.07344632768361582,
+      "recall": 0.8666666666666667,
+      "f1": 0.13541666666666669,
+      "tp": 13,
+      "fp": 164,
+      "fn": 2
+    },
+    {
+      "min_support": 0.02,
+      "min_confidence": 0.85,
+      "n_candidates": 168,
+      "precision": 0.07738095238095238,
+      "recall": 0.8666666666666667,
+      "f1": 0.14207650273224043,
+      "tp": 13,
+      "fp": 155,
+      "fn": 2
+    },
+    {
+      "min_support": 0.02,
+      "min_confidence": 0.9,
+      "n_candidates": 165,
+      "precision": 0.07878787878787878,
+      "recall": 0.8666666666666667,
+      "f1": 0.14444444444444443,
+      "tp": 13,
+      "fp": 152,
+      "fn": 2
+    },
+    {
+      "min_support": 0.02,
+      "min_confidence": 0.95,
+      "n_candidates": 147,
+      "precision": 0.08843537414965986,
+      "recall": 0.8666666666666667,
+      "f1": 0.16049382716049385,
+      "tp": 13,
+      "fp": 134,
+      "fn": 2
+    },
+    {
+      "min_support": 0.05,
+      "min_confidence": 0.8,
+      "n_candidates": 177,
+      "precision": 0.07344632768361582,
+      "recall": 0.8666666666666667,
+      "f1": 0.13541666666666669,
+      "tp": 13,
+      "fp": 164,
+      "fn": 2
+    },
+    {
+      "min_support": 0.05,
+      "min_confidence": 0.85,
+      "n_candidates": 168,
+      "precision": 0.07738095238095238,
+      "recall": 0.8666666666666667,
+      "f1": 0.14207650273224043,
+      "tp": 13,
+      "fp": 155,
+      "fn": 2
+    },
+    {
+      "min_support": 0.05,
+      "min_confidence": 0.9,
+      "n_candidates": 165,
+      "precision": 0.07878787878787878,
+      "recall": 0.8666666666666667,
+      "f1": 0.14444444444444443,
+      "tp": 13,
+      "fp": 152,
+      "fn": 2
+    },
+    {
+      "min_support": 0.05,
+      "min_confidence": 0.95,
+      "n_candidates": 147,
+      "precision": 0.08843537414965986,
+      "recall": 0.8666666666666667,
+      "f1": 0.16049382716049385,
+      "tp": 13,
+      "fp": 134,
+      "fn": 2
+    }
+  ],
+  "note": "Type normalization applied (fd/enum/logic->categorical, range->numerical, consistency->structural). CTANE reference from ctane_experiment_results.json (telco best)."
+}

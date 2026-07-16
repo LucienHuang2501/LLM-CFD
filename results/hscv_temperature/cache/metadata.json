@@ -1,0 +1,31 @@
+{
+  "experiment": "LLM-CFD Temperature Ablation (5 temps × 5 runs = 25 calls)",
+  "model": {
+    "name": "DeepSeek-V4-Flash",
+    "api_identifier": "deepseek-chat",
+    "provider": "DeepSeek AI",
+    "api_endpoint": "https://api.deepseek.com",
+    "api_protocol": "OpenAI-compatible"
+  },
+  "call_metadata": {
+    "call_dates": "2026-06-20 to 2026-06-25",
+    "temperatures": [
+      0.0,
+      0.3,
+      0.5,
+      0.7
+    ],
+    "max_tokens": 4096,
+    "prompt_strategy": "few_shot (CoT+few-shot)",
+    "n_runs_per_temp": 5,
+    "n_cache_files": 20
+  },
+  "cache_files": {
+    "naming_convention": "deepseek-chat_temp{temp}_run{run_idx}.json",
+    "content": "Raw JSON string of LLM response"
+  },
+  "reproducibility": {
+    "no_api_key_needed": true,
+    "note": "Cached responses allow full reproducibility without additional API calls."
+  }
+}

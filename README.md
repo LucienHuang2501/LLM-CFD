@@ -1,37 +1,65 @@
 # LLM-CFD 实验套件
 
-LLM 驱动的条件函数依赖（Conditional Functional Dependency, CFD）发现与异常检测实验代码。基于 Kaggle Telco Customer Churn 数据集，使用 DeepSeek-V4-Pro 大语言模型完成 CFD 规则的语义发现、统计验证、异常评分与可解释输出全流程。
+LLM 驱动的条件函数依赖（Conditional Functional Dependency, CFD）发现与异常检测实验代码。基于 Kaggle Telco Customer Churn 数据集和 UCI Adult Census Income 数据集，使用 DeepSeek-V4-Flash 大语言模型完成 CFD 规则的语义发现、统计验证、异常评分与可解释输出全流程。
 
 ## 目录结构
 
 ```
-experiments/
-├── data/
-│   └── telco_churn.csv              # 数据集（Kaggle Telco Customer Churn，7,043 行 × 21 列）
-├── src/
-│   ├── experiment.py                # 主实验脚本：Phase 1-4 完整流水线
-│   └── supplementary_experiments.py # 补充实验脚本：消融、稳定性、统计基线
-├── results/
-│   ├── cache/                       # LLM 响应缓存（避免重复调用）
-│   ├── supplementary/               # 补充实验结果
-│   ├── candidate_cfds.json          # 候选 CFD 规则
-│   ├── validated_cfds.json          # 通过统计验证的 CFD 规则
-│   ├── validation_stats.json        # Phase 2 验证统计
-│   └── final_results.json           # 最终实验结果（含所有指标）
-├── run_experiment.sh                # 实验运行入口脚本
-└── README.md
+├── experiments/
+│   ├── data/
+│   │   ├── telco_churn.csv              # Telco Customer Churn（7,043行×21列，CC0）
+│   │   ├── census+income/               # UCI Adult Census Income（CC BY 4.0）
+│   │   ├── gt_rules_telco.json          # Telco 人工标注 ground-truth CFD（15条）
+│   │   └── gt_rules_adult.json          # Adult 人工标注 ground-truth CFD（12条）
+│   ├── src/
+│   │   ├── experiment.py                # 主实验：Phase 1-4 完整流水线
+│   │   ├── supplementary_experiments.py # 补充实验：消融、稳定性、统计基线
+│   │   ├── unified_experiment.py        # 统一评估流程（含CTANE对比）
+│   │   ├── self_consistency_voting_v2.py # HSCV 混合自洽性投票机制
+│   │   ├── adult_hscv_experiment.py     # Adult 数据集 HSCV 实验
+│   │   ├── adult_unified_experiment.py  # Adult 统一评估
+│   │   ├── cross_llm_experiment.py      # 跨 LLM 模型验证（DeepSeek vs GLM）
+│   │   ├── hscv_ablation_temperature.py # 温度消融实验
+│   │   ├── ctane_experiment.py          # CTANE 基线对比
+│   │   ├── cfdminer_hyperparam_sweep.py # CFDMiner 超参搜索
+│   │   ├── non_semantic_anomaly_experiment.py # 非语义异常控制实验
+│   │   ├── generate_cot_runs.py         # CoT+少样本 15次确定性运行生成
+│   │   ├── regenerate_figures_nature.py # Nature 风格论文图表生成
+│   │   └── regenerate_figures_v4.py     # 论文图表生成脚本
+│   ├── results/
+│   │   ├── cache/                       # LLM 响应缓存（主实验）
+│   │   ├── supplementary/               # 补充实验结果（含 cache/ 和 cache_cot/）
+│   │   ├── cross_llm/                   # 跨 LLM 实验结果（含 cache/）
+│   │   ├── hscv_temperature/            # 温度消融实验结果（含 cache/）
+│   │   ├── ctane/                       # CTANE/CFDMiner 实验结果
+│   │   ├── unified/                     # 统一评估流程结果
+│   │   ├── p1_revision/                 # Adult 数据集 HSCV 结果
+│   │   ├── figures/                     # 论文图表（PNG 300DPI + SVG）
+│   │   ├── final_results.json           # 主实验最终结果
+│   │   ├── low_anomaly_rate_results.json # 5%注入率实验结果
+│   │   ├── non_semantic_anomaly_results.json # 非语义控制实验结果
+│   │   └── l2_l3_results.json           # L2/L3层风险检验结果
+│   ├── PROMPT_TEMPLATES.md              # 完整提示词模板文档
+│   ├── requirements.txt                 # Python 依赖
+│   ├── run_experiment.sh                # 实验运行入口脚本
+│   └── README.md
+├── docs/
+│   └── SUPPLEMENTARY_THEORY.md          # 补充理论材料（论文正文引用）
+├── LICENSE                              # MIT License
+└── README.md                            # 本文件
 ```
 
 ## 运行环境
 
 - Python ≥ 3.10
-- 依赖包：`openai`, `pandas`, `numpy`, `scikit-learn`, `scipy`
+- 依赖包：见 `experiments/requirements.txt`
 - DeepSeek API Key（环境变量 `DEEPSEEK_API_KEY`）
+- GLM API Key（环境变量 `GLM_API_KEY`，仅跨 LLM 实验需要）
 
 安装依赖：
 
 ```bash
-pip install openai pandas numpy scikit-learn scipy
+pip install -r experiments/requirements.txt
 ```
 
 ## 快速开始
@@ -40,17 +68,25 @@ pip install openai pandas numpy scikit-learn scipy
 # 1. 设置 DeepSeek API Key
 export DEEPSEEK_API_KEY="sk-your-key-here"
 
-# 2. 运行主实验
+# 2. 运行主实验（CoT+少样本策略，temp=0.0）
 cd experiments
-bash run_experiment.sh
-# 或直接调用：
 python3 src/experiment.py
 
-# 3. 运行补充实验（消融 / 稳定性 / 统计基线）
-python3 src/supplementary_experiments.py
+# 3. 运行统一评估流程（含 CTANE 对比 + 梯度评分 + 冗余消减）
+python3 src/unified_experiment.py
+
+# 4. 生成 CoT+少样本 15次确定性运行
+python3 src/generate_cot_runs.py
+
+# 5. 跨 LLM 验证（需要 GLM_API_KEY）
+export GLM_API_KEY="your-glm-key"
+python3 src/cross_llm_experiment.py
+
+# 6. 生成论文图表
+python3 src/regenerate_figures_nature.py
 ```
 
-> 提示：LLM 响应会缓存到 `results/cache/`，再次运行时不会重复消耗 API 调用。如需强制重新调用 LLM，请删除对应缓存文件。
+> 提示：LLM 响应会缓存到 `results/cache/`、`results/supplementary/cache/`、`results/cross_llm/cache/` 和 `results/hscv_temperature/cache/`，再次运行时不会重复消耗 API 调用。如需强制重新调用 LLM，请删除对应缓存文件。
 
 ## 代码用途
 
@@ -62,66 +98,89 @@ python3 src/supplementary_experiments.py
 |------|------|----------|
 | Phase 1 | LLM 语义 CFD 发现（Zero-Shot / Few-Shot / CoT+Few-Shot 三种提示策略） | `build_llm_prompt()`, `call_deepseek_api()`, `parse_cfd_response()` |
 | Phase 2 | 统计验证门（支持度过滤 + 自适应置信度门 + Jaccard 去重） | `statistical_validation()`, `deduplicate_cfds()` |
-| Phase 3 | 异常评分（构建 n×m 违规矩阵 V，加权聚合，99% 分位裁剪归一化） | `compute_anomaly_scores()` |
+| Phase 3 | 异常评分（构建 n×m 违规矩阵 V，梯度违规度量，冗余消减，加权聚合，p99裁剪） | `compute_anomaly_scores()` |
 | Phase 4 | 可解释输出（top-5% 记录 + 自然语言解释） | 嵌入主流程 |
 
 基线方法：`run_eif()`（Extended Isolation Forest）、`run_copod()`（COPOD Copula 离群点检测）。
 
-评估指标：CFD 发现使用 Precision / Recall / F1（按 `dependent_attribute + condition_attributes + 类型类别` 匹配）；异常检测使用 AUPRC / Precision@k / NDCG@k。
+### 2. 统一评估流程 `src/unified_experiment.py`
 
-### 2. 补充实验 `src/supplementary_experiments.py`
+论文 §4 主实验使用的统一评估脚本，包含：
+- CTANE/CFDMiner 基线对比
+- 梯度违规评分（enum/fd: `1-P(dep|condition)`, range: 归一化距离, consistency: 归一化比率）
+- 冗余消减（按 `(dep_attr, condition_attributes)` 分组取最大违规）
+- 三种聚合策略（top3_mean / max / mean）+ p99 裁剪
 
-针对审稿意见的三组补充实验：
+### 3. 补充实验 `src/supplementary_experiments.py`
 
-- **Experiment 1 — 列名语义消融**：将列名替换为 `ATTR_01`、`ATTR_02`… 测试 LLM 是否依赖列名语义。函数：`experiment_column_ablation()`
-- **Experiment 2 — LLM 输出稳定性**：重复调用 LLM 5 次（`STABILITY_RUNS`），统计候选数 / Precision / Recall / F1 的均值与标准差。函数：`experiment_stability()`
-- **Experiment 3 — 统计 CFD 基线**：纯统计方法发现 CFD（枚举约束、范围约束、分组 FD、一致性相关性），不调用 LLM。函数：`experiment_statistical_baseline()`
+- **列名语义消融**：将列名替换为 `ATTR_01`… 测试 LLM 是否依赖列名语义
+- **LLM 输出稳定性**：少样本策略多次调用（`STABILITY_RUNS=5`），统计波动
+- **统计 CFD 基线**：纯统计方法发现 CFD，不调用 LLM
+
+### 4. 其他实验脚本
+
+| 脚本 | 用途 |
+|------|------|
+| `ctane_experiment.py` | CTANE 基线 + 超参数搜索 |
+| `cfdminer_hyperparam_sweep.py` | CFDMiner 超参数搜索 |
+| `cross_llm_experiment.py` | DeepSeek-V4-Flash vs GLM-4.7-Flash 跨模型验证 |
+| `hscv_ablation_temperature.py` | 温度参数消融实验（temp=0.0/0.3/0.5/0.7，各10次） |
+| `non_semantic_anomaly_experiment.py` | 非语义异常控制实验（CFD合法的分布离群点） |
+| `generate_cot_runs.py` | CoT+少样本策略 15次确定性运行生成 |
+| `adult_hscv_experiment.py` | Adult 数据集 HSCV 实验 |
+| `adult_unified_experiment.py` | Adult 数据集统一评估 |
+| `regenerate_figures_nature.py` | Nature 风格论文图表（seaborn muted色系，色盲安全） |
 
 ## 核心代码说明
 
 ### 提示词模板
 
-主实验 `experiment.py` 中的提示词由 `build_llm_prompt(schema_metadata, df_sample, strategy)` 构建，支持三种策略：
+主实验支持三种提示策略：
 
 - **zero_shot**：仅含 Schema 描述 + 任务说明 + 输出格式要求
-- **few_shot**：在 zero_shot 基础上追加 10 条 CFD 示例（`CFD_EXAMPLES_FEWSHOT` 常量，涵盖 range / enum / logic / consistency / fd 五类）
-- **cot_fewshot**（默认）：在 few_shot 基础上追加 7 步 CoT 推理引导（级联服务依赖 → 合同数值范围 → 人口枚举 → 业务逻辑 → 数值一致性 → 全局范围 → 渠道枚举）
+- **few_shot**：追加 10 条 CFD 示例（涵盖 range / enum / logic / consistency / fd 五类）
+- **cot_fewshot**（推荐默认）：在 few_shot 基础上追加 7 步 CoT 推理引导
+
+> 完整提示词模板详见 `experiments/PROMPT_TEMPLATES.md` 和论文附录B。
 
 输出格式要求 LLM 严格返回 JSON 数组，每条 CFD 含 `type / condition_attributes / condition_values / dependent_attribute / expected_pattern / confidence_estimate / natural_language_description` 七个字段。
 
-补充实验 `supplementary_experiments.py` 使用简化版提示词 `build_prompt(schema, strategy)`，便于在列名消融场景下复用。
+### 规则验证
 
-### 规则验证脚本
-
-Phase 2 统计验证在 `experiment.py` 中实现：
+Phase 2 统计验证实现：
 
 - `evaluate_cfd_condition(df, cfd)`：按 `condition_values` 过滤行，返回条件满足的布尔掩码
-- `evaluate_cfd_dependency(df, cfd, condition_mask)`：在条件满足的行内检查依赖属性是否满足 `expected_pattern`
+- `evaluate_cfd_dependency(df, cfd, condition_mask)`：检查依赖属性是否满足 `expected_pattern`
   - `range` 类型：数值落在 `[min, max]` 区间
   - `enum` 类型：取值属于允许集合
-  - `fd / logic / consistency` 类型：非空即视为满足（简化处理）
-- `statistical_validation(df, candidates)`：逐条计算 support 与 confidence，应用 `SUPPORT_THRESHOLD=0.01` 与自适应置信度门（high=0.90 / medium=0.85 / low=0.75），输出通过 / 拒绝标签
-- `deduplicate_cfds(cfds, jaccard_threshold=0.8)`：按条件属性集 Jaccard 相似度去重，保留置信度更高者
+  - `fd / logic / consistency` 类型：非空即视为满足
+- `statistical_validation(df, candidates)`：逐条计算条件支持度与置信度，应用自适应置信度门
+- `deduplicate_cfds(cfds, jaccard_threshold=0.8)`：按条件属性集 Jaccard 相似度去重
 
-补充实验 `supplementary_experiments.py` 中的 `validate_cfd(df, cfd)` 是等价的独立实现，返回 `{cfd, support, confidence, passed}`。
+### 异常评分
 
-### 评分计算脚本
+Phase 3 异常评分使用梯度违规度量（非二值标志）：
 
-Phase 3 异常评分在 `experiment.py` 的 `compute_anomaly_scores(df, validated_cfds)` 中实现：
+| 约束类型 | 违规度量 |
+|---------|---------|
+| range | 归一化超出量 `max((lo-v)/range, (v-hi)/range, 0)` |
+| enum/fd | `1 - P(dep=val \| condition)` |
+| consistency | 归一化比率 `abs(actual - expected) / expected` |
+| logic | `1 - P(A \| condition pattern)` |
 
-1. 构建 n×m 违规矩阵 V（n=记录数，m=验证通过的 CFD 数）
-   - `range`：归一化超出量 `max((lo-v)/range, (v-hi)/range, 0)`
-   - `enum`：违规为 1，否则 0
-   - `fd / logic / consistency`：二值违规
-2. 按各 CFD 的 confidence 加权求和并归一化：`scores = Σ(V · conf) / Σ(conf)`
-3. 99% 分位裁剪后归一化到 [0, 1]
+冗余消减：按 `(dep_attr, condition_attributes)` 元组分组，取组内最大违规值。
 
-异常检测评估在 `evaluate_anomaly_detection(scores, labels, k=100)` 中计算 AUPRC（`sklearn.metrics.average_precision_score`）、Precision@k、NDCG@k（`sklearn.metrics.ndcg_score`）。
+### 异常注入
 
 合成异常注入在 `inject_anomalies(df)` 中实现，三类注入：
 - 依赖破坏（10%）：破坏 Contract → MonthlyCharges 关系
 - 范围违规（5%）：将数值推到 3.5σ~5.5σ 之外
 - 逻辑矛盾（3%）：篡改 InternetService ↔ OnlineSecurity 级联
+
+非语义控制实验（`non_semantic_anomaly_experiment.py`）注入三类CFD合法的分布离群点：
+- 范围内分布异常点（经clip限制在CFD合法范围内）
+- 罕见但合法的分类属性交换（自由属性）
+- CFD范围内的相关性偏移
 
 ## 关键参数
 
@@ -131,29 +190,75 @@ Phase 3 异常评分在 `experiment.py` 的 `compute_anomaly_scores(df, validate
 | `CONFIDENCE_THRESHOLDS` | high=0.90 / medium=0.85 / low=0.75 | 自适应置信度门 |
 | `ANOMALY_INJECTION_RATES` | dep=0.10 / range=0.05 / logic=0.03 | 合成异常注入比例 |
 | `RANDOM_SEED` | 42 | 全局随机种子 |
-| `LLM_TEMPERATURE` | 0.0 | LLM 采样温度（确定性输出） |
+| `LLM_TEMPERATURE` | 0.0 | LLM 采样温度（推荐配置：CoT+少样本, temp=0.0） |
 | `LLM_MAX_TOKENS` | 4096 | LLM 最大输出 token |
-| `STABILITY_RUNS` | 5 | 补充实验 2 重复调用次数 |
+| `STABILITY_RUNS` | 5 | 补充实验少样本稳定性调用次数 |
+| `COT_RUNS` | 15 | CoT+少样本策略确定性运行次数 |
 
 ## 主要结果
 
-主实验（`results/final_results.json`）：
+### 主实验（CoT+少样本策略, temp=0.0, 15次运行）
 
-- 最佳策略：`few_shot`（F1=0.711，Precision=0.640，Recall=0.800）
-- 异常检测 AUPRC：
-  - LLM-CFD（本方法）：0.566
-  - LLM-CFD + COPOD：0.583
-  - LLM-CFD + EIF：0.543
-  - COPOD：0.363 / EIF：0.456 / LLM-NoGate：0.504
+| 指标 | LLM-CFD | CTANE | CFDMiner | EIF | COPOD |
+|------|---------|-------|----------|-----|-------|
+| F1 | 0.737 | 0.028 | 0.003 | — | — |
+| AUPRC | 0.495 | 0.272 | 0.387 | 0.205 | 0.167 |
+| 查全率 | 100% | 53.3% | 26.7% | — | — |
 
-补充实验（`results/supplementary/supplementary_results.json`）：
+- 在 fd/enum 约束上 LLM-CFD 与 CTANE 查全率持平（100%），性能差异来自 range/logic/consistency 约束
+- bootstrap CI (B=1000): LLM-CFD [0.470, 0.521] vs EIF [0.192, 0.221]，p<0.001
+- 确定性输出：15/15次运行 IQR=0.000
 
-- 列名消融后 F1=0（验证 LLM 依赖列名语义）
-- 5 次稳定性测试：F1 均值 0.154 ± 0.173（存在波动）
-- 统计基线作为无 LLM 对照
+### LLM-CFDMiner 融合
+
+| 配置 | AUPRC | 额外API调用 |
+|------|-------|------------|
+| LLM-CFD 单独 | 0.495 | 0 |
+| LLM-CFDMiner（评分平均） | 0.561 | 0 |
+| LLM-CFDMiner（规则过滤） | 0.560 | +155 |
+| LLM-CFD+COPOD 融合 | 0.309 | +1 |
+
+### 跨 LLM 验证
+
+| 模型 | F1 | AUPRC | Jaccard |
+|------|-----|-------|---------|
+| DeepSeek-V4-Flash | 0.737 | 0.495 | — |
+| GLM-4.7-Flash | 0.718 | 0.495 | 0.920 |
+
+### 5% 注入率实验
+
+| 方法 | AUPRC | F1 |
+|------|-------|-----|
+| LLM-CFD | 0.285 | 0.292 |
+| EIF | 0.069 | 0.085 |
+| COPOD | 0.049 | 0.034 |
+
+## Ground Truth 标注
+
+人工标注的 ground-truth CFD 规则存储于：
+
+- `data/gt_rules_telco.json`：Telco 数据集 15 条规则（覆盖 fd / range / enum / logic / consistency 五类）
+- `data/gt_rules_adult.json`：Adult 数据集 12 条规则
+
+标注者间一致性（Cohen's kappa）：规则存在性维度 kappa=0.82，规则类型维度 kappa=0.75。
+
+## 补充材料
+
+论文正文引用的补充理论材料位于 `docs/SUPPLEMENTARY_THEORY.md`，包含：
+
+1. 双向验证机制详细说明
+2. CFD规则冲突消解近似保证（命题2证明）
+3. 多层级数据质量风险检验（L1/L2/L3完整结果）
+4. 形式化框架完整定义（定义3/3a，命题1/2）
+5. CTANE超参数搜索完整结果（Telco + Adult）
+6. CoT+少样本策略15次运行详细数据
+7. 提示词模板引用
+8. 真实世界数据质量验证
 
 ## 注意事项
 
 - `supplementary_experiments.py` 中的 `DATA_PATH` 与 `RESULTS_PATH` 为绝对路径，迁移环境时需修改。
 - 缓存文件名含 prompt 哈希，修改提示词后会自动生成新缓存，不会污染旧结果。
-- `build_ground_truth_cfds()` 定义了 22 条领域知识 ground truth CFD，作为评估基准。
+- Adult 数据集原始文件位于 `data/census+income/` 目录下，实验中自动预处理（去除缺失值、子采样至 10,000 条，seed=42）。
+- LLM 模型：DeepSeek API (`model="deepseek-chat"`)，智谱 API (`model="glm-4.7-flash"`)
+- 代码仓库地址：https://github.com/LucienHuang2501/LLM-CFD （MIT License）

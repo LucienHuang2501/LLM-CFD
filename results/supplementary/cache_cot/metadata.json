@@ -1,0 +1,28 @@
+{
+  "experiment": "LLM-CFD Main Experiment (Telco, CoT+few-shot, 15 runs)",
+  "model": {
+    "name": "DeepSeek-V4-Flash",
+    "api_identifier": "deepseek-chat",
+    "provider": "DeepSeek AI",
+    "api_endpoint": "https://api.deepseek.com",
+    "api_protocol": "OpenAI-compatible"
+  },
+  "call_metadata": {
+    "call_dates": "2026-07-13 to 2026-07-14",
+    "temperature": 0.0,
+    "max_tokens": 4096,
+    "prompt_strategy": "cot_fewshot (CoT+few-shot hybrid)",
+    "n_runs": 15,
+    "n_cache_files": 15
+  },
+  "cache_files": {
+    "naming_convention": "MD5 hash of (system_msg + user_msg + run_id)",
+    "content": "Raw JSON string of LLM response"
+  },
+  "reproducibility": {
+    "cache_format": "Raw JSON string of LLM response",
+    "cache_naming": "MD5 hash of (system_msg + user_msg + run_id)",
+    "no_api_key_needed": true,
+    "note": "Cached responses allow full reproducibility without additional API calls. All 15 runs produce identical parsed CFDs (28 candidates, 23 validated) at temp=0.0."
+  }
+}

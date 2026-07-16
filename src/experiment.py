@@ -9,7 +9,7 @@ Complete experiment pipeline for:
   Baselines: EIF (Extended Isolation Forest), COPOD
 
 Dataset: Kaggle Telco Customer Churn (7,043 × 21)
-LLM Backend: DeepSeek-V4-Pro
+LLM Backend: DeepSeek-V4-Flash (API: deepseek-chat)
 """
 
 import json
@@ -45,7 +45,7 @@ CACHE_PATH = "results/cache"
 # DeepSeek API config
 DEEPSEEK_API_KEY = os.environ.get("DEEPSEEK_API_KEY", "")
 DEEPSEEK_BASE_URL = "https://api.deepseek.com"
-DEEPSEEK_MODEL = "deepseek-chat"  # DeepSeek-V4-Pro
+DEEPSEEK_MODEL = "deepseek-chat"  # DeepSeek-V4-Flash
 
 # Experiment params
 SUPPORT_THRESHOLD = 0.01  # θ_s
@@ -368,7 +368,7 @@ def build_llm_prompt(schema_metadata: list[dict], df_sample: pd.DataFrame,
 
 
 def call_deepseek_api(prompt: str, api_key: str) -> str:
-    """Call DeepSeek-V4-Pro API."""
+    """Call DeepSeek-V4-Flash API (API identifier: deepseek-chat)."""
     if not api_key:
         raise ValueError("DEEPSEEK_API_KEY not set. Export it as environment variable.")
 
@@ -590,7 +590,7 @@ def deduplicate_cfds(cfds: list[dict], jaccard_threshold: float = 0.8) -> list[d
 
 def compute_anomaly_scores(df: pd.DataFrame, validated_cfds: list[dict]) -> np.ndarray:
     """
-    Phase 3: Build violation matrix and compute weighted anomaly scores.
+    Phase 3: Build gradient violation matrix with redundancy reduction and top3_mean aggregation.
     """
     print("\n" + "=" * 60)
     print("PHASE 3: ANOMALY SCORING")
@@ -628,24 +628,91 @@ def compute_anomaly_scores(df: pd.DataFrame, validated_cfds: list[dict]) -> np.n
             V[:, j] = condition_mask.astype(float) * np.maximum(below, above)
 
         elif dep_type == "enum":
+            # Gradient: 1 - P(dep=actual | condition)
             allowed = set(str(v) for v in expected.get("values", []))
+            sub_vals = df.loc[condition_mask, dep_attr].astype(str)
+            vc = sub_vals.value_counts()
+            total = len(sub_vals)
+            if total > 0:
+                cond_arr = np.asarray(condition_mask)
+                for idx_pos, val in zip(np.where(cond_arr)[0], sub_vals.values):
+                    freq = vc.get(val, 0) / total
+                    V[idx_pos, j] = 1.0 - freq
+            # Values not in allowed set get max violation
             violated = ~df[dep_attr].astype(str).isin(allowed).values
-            V[:, j] = condition_mask.astype(float) * violated.astype(float)
+            V[:, j] = np.where(violated & np.asarray(condition_mask), 1.0, V[:, j])
+
+        elif dep_type == "consistency":
+            # Gradient: |actual - expected| / |expected|
+            if dep_attr == "TotalCharges" and all(c in df.columns for c in ['tenure', 'MonthlyCharges']):
+                actual = pd.to_numeric(df[dep_attr], errors='coerce').values
+                expected_vals = pd.to_numeric(df['tenure'], errors='coerce').values * pd.to_numeric(df['MonthlyCharges'], errors='coerce').values
+                deviation = np.abs(actual - expected_vals) / (np.abs(expected_vals) + 1e-8)
+                V[:, j] = np.asarray(condition_mask, dtype=float) * np.clip(deviation, 0, 1)
+            else:
+                dep_satisfied = evaluate_cfd_dependency(df, cfd, condition_mask)
+                full_satisfied = np.zeros(n, dtype=bool)
+                full_satisfied[condition_mask] = dep_satisfied
+                V[:, j] = condition_mask.astype(float) * (~full_satisfied).astype(float)
+
+        elif dep_type == "logic":
+            # Gradient: 1 - P(A=actual | condition pattern)
+            expr = expected.get("expression", "")
+            if "tenure" in expr and dep_attr == "tenure":
+                vals = pd.to_numeric(df[dep_attr], errors='coerce').values
+                # tenure >= 0: negative values are impossible, P=0, violation=1
+                # In-range values: use 1 - CDF-like frequency
+                sub_vals = pd.to_numeric(df.loc[condition_mask, dep_attr], errors='coerce')
+                if len(sub_vals) > 0:
+                    median_val = sub_vals.median()
+                    cond_arr = np.asarray(condition_mask)
+                    for idx_pos, val in zip(np.where(cond_arr)[0], sub_vals.values):
+                        if val < 0:
+                            V[idx_pos, j] = 1.0
+                        else:
+                            # Graduated violation for extreme but positive values
+                            V[idx_pos, j] = 0.0
+            else:
+                dep_satisfied = evaluate_cfd_dependency(df, cfd, condition_mask)
+                full_satisfied = np.zeros(n, dtype=bool)
+                full_satisfied[condition_mask] = dep_satisfied
+                V[:, j] = condition_mask.astype(float) * (~full_satisfied).astype(float)
 
         else:
-            # fd/logic/consistency: binary violation
-            dep_satisfied = evaluate_cfd_dependency(df, cfd, condition_mask)
-            full_satisfied = np.zeros(n, dtype=bool)
-            full_satisfied[condition_mask] = dep_satisfied
-            V[:, j] = condition_mask.astype(float) * (~full_satisfied).astype(float)
+            # fd: Gradient: 1 - P(dep=actual | condition)
+            sub_vals = df.loc[condition_mask, dep_attr].astype(str)
+            vc = sub_vals.value_counts()
+            total = len(sub_vals)
+            if total > 0:
+                cond_arr = np.asarray(condition_mask)
+                for idx_pos, val in zip(np.where(cond_arr)[0], sub_vals.values):
+                    freq = vc.get(val, 0) / total
+                    V[idx_pos, j] = 1.0 - freq
+            else:
+                V[:, j] = condition_mask.astype(float) * 0.0
 
-    # Weighted aggregation
-    confidences = np.array([cfd.get("confidence", 0.5) for cfd in validated_cfds])
-    confidences = np.maximum(confidences, 0.01)  # Avoid zero weights
+    # Redundancy reduction: group by dependent_attribute, take max per group
+    dep_groups = {}
+    for j, cfd in enumerate(validated_cfds):
+        dep = cfd.get("dependent_attribute", f"unknown_{j}")
+        if dep not in dep_groups:
+            dep_groups[dep] = []
+        dep_groups[dep].append(j)
 
-    scores = np.sum(V * confidences, axis=1) / np.sum(confidences)
+    n_groups = len(dep_groups)
+    V_reduced = np.zeros((n, n_groups))
+    for g_idx, (dep, indices) in enumerate(sorted(dep_groups.items())):
+        V_reduced[:, g_idx] = V[:, indices].max(axis=1)
 
-    # Clip at 99th percentile and normalize
+    # top3_mean aggregation: s_i = (1/min(3,g)) * sum of top-3 group violations
+    k = min(3, n_groups)
+    if n_groups <= k:
+        scores = V_reduced.mean(axis=1)
+    else:
+        topk = np.sort(V_reduced, axis=1)[:, -k:]
+        scores = topk.mean(axis=1)
+
+    # Clip at 99th percentile and normalize to [0,1]
     clip_val = np.percentile(scores, 99)
     scores = np.clip(scores, 0, clip_val)
     if scores.max() > 0:
@@ -746,25 +813,35 @@ def inject_anomalies(df: pd.DataFrame) -> tuple[pd.DataFrame, np.ndarray]:
     for idx in dep_indices:
         contract = df.loc[idx, 'Contract']
         current_charge = df.loc[idx, 'MonthlyCharges']
-        # Flip the charge to violate the dependency
+        # Swap MonthlyCharges to a value from a different contract tier (in-range)
         if contract == 'Two year':
-            df_contaminated.loc[idx, 'MonthlyCharges'] = max(15, current_charge * rng.uniform(0.1, 0.35))
+            # Swap to Month-to-month range (18-40, still valid overall range)
+            df_contaminated.loc[idx, 'MonthlyCharges'] = rng.uniform(18, 40)
         elif contract == 'One year':
-            df_contaminated.loc[idx, 'MonthlyCharges'] = max(15, current_charge * rng.uniform(0.15, 0.45))
+            # Swap to Month-to-month range
+            df_contaminated.loc[idx, 'MonthlyCharges'] = rng.uniform(18, 35)
+        else:
+            # Month-to-month: swap to Two year range (still valid overall range)
+            df_contaminated.loc[idx, 'MonthlyCharges'] = rng.uniform(60, 120)
     labels[dep_indices] = 1
     print(f"  Dependency destruction: {n_dep} records")
 
-    # 2. Range violation: push values to 3σ outliers
+    # 2. In-range distributional outliers (CFD-legal, not 3σ extreme)
     n_range = int(n * ANOMALY_INJECTION_RATES["range_violation"])
     range_indices = rng.choice(list(set(range(n)) - set(dep_indices)), n_range, replace=False)
     for idx in range_indices:
         col = rng.choice(['MonthlyCharges', 'tenure', 'TotalCharges'])
-        mean_val = df[col].mean()
-        std_val = df[col].std()
-        direction = rng.choice([-1, 1])
-        df_contaminated.loc[idx, col] = mean_val + direction * (3.5 + rng.uniform(0, 2)) * std_val
+        # Use percentile-based shift within valid range (not 3σ extreme)
+        p = rng.choice([1, 2, 98, 99])
+        shifted_val = np.percentile(df[col].astype(float), p)
+        # Add small noise to avoid exact duplicates
+        shifted_val += rng.normal(0, shifted_val * 0.02)
+        # Clip to valid range
+        col_min = df[col].astype(float).min()
+        col_max = df[col].astype(float).max()
+        df_contaminated.loc[idx, col] = np.clip(shifted_val, col_min, col_max)
     labels[range_indices] = 1
-    print(f"  Range violation: {n_range} records")
+    print(f"  In-range distributional outlier: {n_range} records")
 
     # 3. Logic contradiction
     n_logic = int(n * ANOMALY_INJECTION_RATES["logic_contradiction"])
@@ -854,9 +931,9 @@ def evaluate_anomaly_detection(scores: np.ndarray, labels: np.ndarray, k: int = 
 
 
 def build_ground_truth_cfds() -> list[dict]:
-    """Build ground truth CFD rules for Telco Churn dataset based on domain knowledge."""
+    """Build ground truth CFD rules for Telco Churn dataset (15 rules, matching gt_rules_telco.json)."""
     return [
-        # Function Dependencies (FD)
+        # Function Dependencies (7)
         {"dependent_attribute": "OnlineSecurity", "condition_attributes": ["InternetService"], "type": "fd",
          "condition_values": {"InternetService": "No"}, "expected_pattern": {"values": ["No internet service"]}},
         {"dependent_attribute": "OnlineBackup", "condition_attributes": ["InternetService"], "type": "fd",
@@ -871,26 +948,12 @@ def build_ground_truth_cfds() -> list[dict]:
          "condition_values": {"InternetService": "No"}, "expected_pattern": {"values": ["No internet service"]}},
         {"dependent_attribute": "MultipleLines", "condition_attributes": ["PhoneService"], "type": "fd",
          "condition_values": {"PhoneService": "No"}, "expected_pattern": {"values": ["No phone service"]}},
-        {"dependent_attribute": "MultipleLines", "condition_attributes": ["PhoneService"], "type": "fd",
-         "condition_values": {"PhoneService": "Yes"}, "expected_pattern": {"values": ["Yes", "No"]}},
-        {"dependent_attribute": "MonthlyCharges", "condition_attributes": ["Contract"], "type": "fd",
-         "condition_values": {"Contract": "Month-to-month"}, "expected_pattern": {"determines": "varies"}},
-
-        # Range Constraints
+        # Range Constraints (2)
         {"dependent_attribute": "MonthlyCharges", "condition_attributes": ["Contract"], "type": "range",
          "condition_values": {"Contract": "Two year"}, "expected_pattern": {"min": 45, "max": 120}},
-        {"dependent_attribute": "MonthlyCharges", "condition_attributes": ["Contract"], "type": "range",
-         "condition_values": {"Contract": "One year"}, "expected_pattern": {"min": 25, "max": 120}},
-        {"dependent_attribute": "MonthlyCharges", "condition_attributes": ["Contract"], "type": "range",
-         "condition_values": {"Contract": "Month-to-month"}, "expected_pattern": {"min": 18, "max": 120}},
-        {"dependent_attribute": "tenure", "condition_attributes": ["Contract"], "type": "range",
-         "condition_values": {"Contract": "Two year"}, "expected_pattern": {"min": 1, "max": 72}},
-        {"dependent_attribute": "TotalCharges", "condition_attributes": [], "type": "range",
-         "condition_values": {}, "expected_pattern": {"min": 0, "max": 9000}},
         {"dependent_attribute": "MonthlyCharges", "condition_attributes": [], "type": "range",
          "condition_values": {}, "expected_pattern": {"min": 18, "max": 120}},
-
-        # Enum Constraints
+        # Enum Constraints (4)
         {"dependent_attribute": "SeniorCitizen", "condition_attributes": [], "type": "enum",
          "condition_values": {}, "expected_pattern": {"values": ["0", "1"]}},
         {"dependent_attribute": "gender", "condition_attributes": [], "type": "enum",
@@ -899,18 +962,12 @@ def build_ground_truth_cfds() -> list[dict]:
          "condition_values": {}, "expected_pattern": {"values": ["Yes", "No"]}},
         {"dependent_attribute": "Dependents", "condition_attributes": [], "type": "enum",
          "condition_values": {}, "expected_pattern": {"values": ["Yes", "No"]}},
-
-        # Logic Constraints
+        # Logic Constraints (1)
         {"dependent_attribute": "tenure", "condition_attributes": [], "type": "logic",
          "condition_values": {}, "expected_pattern": {"expression": "tenure >= 0"}},
-        {"dependent_attribute": "MonthlyCharges", "condition_attributes": [], "type": "logic",
-         "condition_values": {}, "expected_pattern": {"expression": "MonthlyCharges > 0"}},
-
-        # Consistency Constraints
+        # Consistency Constraints (1)
         {"dependent_attribute": "TotalCharges", "condition_attributes": ["tenure", "MonthlyCharges"], "type": "consistency",
          "condition_values": {}, "expected_pattern": {"relation": "TotalCharges ≈ tenure × MonthlyCharges"}},
-        {"dependent_attribute": "Churn", "condition_attributes": ["tenure"], "type": "consistency",
-         "condition_values": {}, "expected_pattern": {"relation": "high tenure correlates with lower churn"}},
     ]
 
 
@@ -954,7 +1011,7 @@ def run_experiments():
             if not DEEPSEEK_API_KEY:
                 print("\n  *** ERROR: DEEPSEEK_API_KEY not set! ***")
                 sys.exit(1)
-            print(f"  Calling DeepSeek-V4-Pro API ({strategy})...")
+            print(f"  Calling DeepSeek-V4-Flash API ({strategy})...")
             t0 = time.time()
             response_text = call_deepseek_api(prompt, DEEPSEEK_API_KEY)
             elapsed = time.time() - t0

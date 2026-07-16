@@ -1,0 +1,34 @@
+{
+  "experiment": "real_world_natural_errors",
+  "dataset": "Telco Customer Churn (original, no injection)",
+  "n_records": 7043,
+  "n_natural_errors": 392,
+  "error_rate": 0.055658100241374416,
+  "error_types": {
+    "totalcharges_empty": 11,
+    "consistency_violation": 381
+  },
+  "results": {
+    "LLM-CFD": {
+      "auprc": 0.06621077446831752,
+      "p_at_10": 0.0,
+      "p_at_50": 0.0,
+      "p_at_100": 0.05,
+      "recall_at_100": 0.012755102040816327
+    },
+    "EIF": {
+      "auprc": 0.04824261690050587,
+      "p_at_10": 0.3,
+      "p_at_50": 0.08,
+      "p_at_100": 0.08,
+      "recall_at_100": 0.02040816326530612
+    },
+    "COPOD": {
+      "auprc": 0.04013061265027735,
+      "p_at_10": 0.0,
+      "p_at_50": 0.0,
+      "p_at_100": 0.0,
+      "recall_at_100": 0.0
+    }
+  }
+}

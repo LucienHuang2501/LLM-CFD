@@ -1,0 +1,32 @@
+{
+  "all_auprc": {
+    "LLM-CFD": 0.4952581160442559,
+    "CFDMiner": 0.3866610904729094,
+    "CTANE": 0.2720678221726803,
+    "EIF": 0.20509795269641615,
+    "COPOD": 0.166652182426815,
+    "EIF+COPOD": 0.19235327752074333,
+    "LLM-CFD+COPOD": 0.30891781637250165
+  },
+  "cfdminer": {
+    "n_discovered": 26977,
+    "n_validated": 7755,
+    "auprc": 0.3866610904729094,
+    "f1_anomaly": 0.3364485981308411,
+    "discovery_f1": 0.0033053648614289346,
+    "discovery_precision": 0.0016558400203795696,
+    "discovery_recall": 0.8666666666666667
+  },
+  "ctane": {
+    "n_discovered": 876,
+    "n_validated": 814,
+    "auprc": 0.2720678221726803,
+    "f1_anomaly": 0.3522727272727273,
+    "discovery_f1": 0.02693602693602693,
+    "discovery_precision": 0.0136986301369863,
+    "discovery_recall": 0.8
+  },
+  "eif_copod_fusion": {
+    "auprc": 0.19235327752074333
+  }
+}

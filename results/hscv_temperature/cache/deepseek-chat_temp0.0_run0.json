@@ -1,0 +1,184 @@
+```json
+[
+  {
+    "type": "enum",
+    "condition_attributes": ["InternetService"],
+    "condition_values": {"InternetService": "No"},
+    "dependent_attribute": "OnlineSecurity",
+    "expected_pattern": {"values": ["No internet service"]},
+    "confidence_estimate": "high",
+    "natural_language_description": "无网络服务时，在线安全必须为无网络服务"
+  },
+  {
+    "type": "enum",
+    "condition_attributes": ["InternetService"],
+    "condition_values": {"InternetService": "No"},
+    "dependent_attribute": "OnlineBackup",
+    "expected_pattern": {"values": ["No internet service"]},
+    "confidence_estimate": "high",
+    "natural_language_description": "无网络服务时，在线备份必须为无网络服务"
+  },
+  {
+    "type": "enum",
+    "condition_attributes": ["InternetService"],
+    "condition_values": {"InternetService": "No"},
+    "dependent_attribute": "DeviceProtection",
+    "expected_pattern": {"values": ["No internet service"]},
+    "confidence_estimate": "high",
+    "natural_language_description": "无网络服务时，设备保护必须为无网络服务"
+  },
+  {
+    "type": "enum",
+    "condition_attributes": ["InternetService"],
+    "condition_values": {"InternetService": "No"},
+    "dependent_attribute": "TechSupport",
+    "expected_pattern": {"values": ["No internet service"]},
+    "confidence_estimate": "high",
+    "natural_language_description": "无网络服务时，技术支持必须为无网络服务"
+  },
+  {
+    "type": "enum",
+    "condition_attributes": ["InternetService"],
+    "condition_values": {"InternetService": "No"},
+    "dependent_attribute": "StreamingTV",
+    "expected_pattern": {"values": ["No internet service"]},
+    "confidence_estimate": "high",
+    "natural_language_description": "无网络服务时，流媒体电视必须为无网络服务"
+  },
+  {
+    "type": "enum",
+    "condition_attributes": ["InternetService"],
+    "condition_values": {"InternetService": "No"},
+    "dependent_attribute": "StreamingMovies",
+    "expected_pattern": {"values": ["No internet service"]},
+    "confidence_estimate": "high",
+    "natural_language_description": "无网络服务时，流媒体电影必须为无网络服务"
+  },
+  {
+    "type": "enum",
+    "condition_attributes": ["PhoneService"],
+    "condition_values": {"PhoneService": "No"},
+    "dependent_attribute": "MultipleLines",
+    "expected_pattern": {"values": ["No phone service"]},
+    "confidence_estimate": "high",
+    "natural_language_description": "无电话服务时，多线路必须为无电话服务"
+  },
+  {
+    "type": "range",
+    "condition_attributes": ["Contract"],
+    "condition_values": {"Contract": "Two year"},
+    "dependent_attribute": "MonthlyCharges",
+    "expected_pattern": {"min": 50, "max": 120},
+    "confidence_estimate": "medium",
+    "natural_language_description": "两年期合同月消费50-120"
+  },
+  {
+    "type": "range",
+    "condition_attributes": ["Contract"],
+    "condition_values": {"Contract": "One year"},
+    "dependent_attribute": "MonthlyCharges",
+    "expected_pattern": {"min": 30, "max": 110},
+    "confidence_estimate": "medium",
+    "natural_language_description": "一年期合同月消费30-110"
+  },
+  {
+    "type": "range",
+    "condition_attributes": ["Contract"],
+    "condition_values": {"Contract": "Month-to-month"},
+    "dependent_attribute": "MonthlyCharges",
+    "expected_pattern": {"min": 18, "max": 120},
+    "confidence_estimate": "medium",
+    "natural_language_description": "月付合同月消费18-120"
+  },
+  {
+    "type": "logic",
+    "condition_attributes": ["tenure"],
+    "condition_values": {},
+    "dependent_attribute": "Churn",
+    "expected_pattern": {"expression": "tenure>24→Churn='No'"},
+    "confidence_estimate": "medium",
+    "natural_language_description": "长期客户流失率低"
+  },
+  {
+    "type": "logic",
+    "condition_attributes": ["tenure"],
+    "condition_values": {},
+    "dependent_attribute": "Churn",
+    "expected_pattern": {"expression": "tenure<6→Churn='Yes'"},
+    "confidence_estimate": "medium",
+    "natural_language_description": "短期客户流失率高"
+  },
+  {
+    "type": "fd",
+    "condition_attributes": ["gender"],
+    "condition_values": {},
+    "dependent_attribute": "SeniorCitizen",
+    "expected_pattern": {"expression": "gender→SeniorCitizen"},
+    "confidence_estimate": "low",
+    "natural_language_description": "性别与是否老年人无强依赖"
+  },
+  {
+    "type": "fd",
+    "condition_attributes": ["Partner"],
+    "condition_values": {},
+    "dependent_attribute": "Dependents",
+    "expected_pattern": {"expression": "Partner→Dependents"},
+    "confidence_estimate": "low",
+    "natural_language_description": "伴侣与家属无强依赖"
+  },
+  {
+    "type": "consistency",
+    "condition_attributes": ["InternetService"],
+    "condition_values": {"InternetService": "Fiber optic"},
+    "dependent_attribute": "OnlineSecurity",
+    "expected_pattern": {"values": ["No", "Yes", "No internet service"]},
+    "confidence_estimate": "high",
+    "natural_language_description": "光纤网络时在线安全可为任意值"
+  },
+  {
+    "type": "consistency",
+    "condition_attributes": ["InternetService"],
+    "condition_values": {"InternetService": "DSL"},
+    "dependent_attribute": "OnlineSecurity",
+    "expected_pattern": {"values": ["No", "Yes", "No internet service"]},
+    "confidence_estimate": "high",
+    "natural_language_description": "DSL网络时在线安全可为任意值"
+  },
+  {
+    "type": "range",
+    "condition_attributes": ["Contract"],
+    "condition_values": {"Contract": "Two year"},
+    "dependent_attribute": "tenure",
+    "expected_pattern": {"min": 12, "max": 72},
+    "confidence_estimate": "medium",
+    "natural_language_description": "两年期合同客户在网时长12-72个月"
+  },
+  {
+    "type": "range",
+    "condition_attributes": ["Contract"],
+    "condition_values": {"Contract": "Month-to-month"},
+    "dependent_attribute": "tenure",
+    "expected_pattern": {"min": 0, "max": 72},
+    "confidence_estimate": "medium",
+    "natural_language_description": "月付合同客户在网时长0-72个月"
+  },
+  {
+    "type": "logic",
+    "condition_attributes": ["MonthlyCharges"],
+    "condition_values": {},
+    "dependent_attribute": "Churn",
+    "expected_pattern": {"expression": "MonthlyCharges>80→Churn='Yes'"},
+    "confidence_estimate": "low",
+    "natural_language_description": "高月消费客户流失率可能较高"
+  },
+  {
+    "type": "logic",
+    "condition_attributes": ["Contract"],
+    "condition_values": {"Contract": "Month-to-month"},
+    "dependent_attribute": "Churn",
+    "expected_pattern": {"expression": "Contract='Month-to-month'→Churn='Yes'"},
+    "confidence_estimate": "medium",
+    "natural_language_description": "月付合同客户流失率较高"
+  }
+]
+```

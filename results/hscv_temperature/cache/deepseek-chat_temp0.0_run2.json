@@ -1,0 +1,184 @@
+```json
+[
+  {
+    "type": "enum",
+    "condition_attributes": ["InternetService"],
+    "condition_values": {"InternetService": "No"},
+    "dependent_attribute": "OnlineSecurity",
+    "expected_pattern": {"values": ["No internet service"]},
+    "confidence_estimate": "high",
+    "natural_language_description": "无网络服务时，在线安全必须为'No internet service'"
+  },
+  {
+    "type": "enum",
+    "condition_attributes": ["InternetService"],
+    "condition_values": {"InternetService": "No"},
+    "dependent_attribute": "OnlineBackup",
+    "expected_pattern": {"values": ["No internet service"]},
+    "confidence_estimate": "high",
+    "natural_language_description": "无网络服务时，在线备份必须为'No internet service'"
+  },
+  {
+    "type": "enum",
+    "condition_attributes": ["InternetService"],
+    "condition_values": {"InternetService": "No"},
+    "dependent_attribute": "DeviceProtection",
+    "expected_pattern": {"values": ["No internet service"]},
+    "confidence_estimate": "high",
+    "natural_language_description": "无网络服务时，设备保护必须为'No internet service'"
+  },
+  {
+    "type": "enum",
+    "condition_attributes": ["InternetService"],
+    "condition_values": {"InternetService": "No"},
+    "dependent_attribute": "TechSupport",
+    "expected_pattern": {"values": ["No internet service"]},
+    "confidence_estimate": "high",
+    "natural_language_description": "无网络服务时，技术支持必须为'No internet service'"
+  },
+  {
+    "type": "enum",
+    "condition_attributes": ["InternetService"],
+    "condition_values": {"InternetService": "No"},
+    "dependent_attribute": "StreamingTV",
+    "expected_pattern": {"values": ["No internet service"]},
+    "confidence_estimate": "high",
+    "natural_language_description": "无网络服务时，流媒体电视必须为'No internet service'"
+  },
+  {
+    "type": "enum",
+    "condition_attributes": ["InternetService"],
+    "condition_values": {"InternetService": "No"},
+    "dependent_attribute": "StreamingMovies",
+    "expected_pattern": {"values": ["No internet service"]},
+    "confidence_estimate": "high",
+    "natural_language_description": "无网络服务时，流媒体电影必须为'No internet service'"
+  },
+  {
+    "type": "enum",
+    "condition_attributes": ["PhoneService"],
+    "condition_values": {"PhoneService": "No"},
+    "dependent_attribute": "MultipleLines",
+    "expected_pattern": {"values": ["No phone service"]},
+    "confidence_estimate": "high",
+    "natural_language_description": "无电话服务时，多线路必须为'No phone service'"
+  },
+  {
+    "type": "range",
+    "condition_attributes": ["Contract"],
+    "condition_values": {"Contract": "Two year"},
+    "dependent_attribute": "MonthlyCharges",
+    "expected_pattern": {"min": 50, "max": 120},
+    "confidence_estimate": "medium",
+    "natural_language_description": "两年期合同月消费通常在50-120之间"
+  },
+  {
+    "type": "range",
+    "condition_attributes": ["Contract"],
+    "condition_values": {"Contract": "Month-to-month"},
+    "dependent_attribute": "MonthlyCharges",
+    "expected_pattern": {"min": 18, "max": 100},
+    "confidence_estimate": "medium",
+    "natural_language_description": "月付合同月消费通常在18-100之间"
+  },
+  {
+    "type": "logic",
+    "condition_attributes": ["tenure"],
+    "condition_values": {},
+    "dependent_attribute": "Churn",
+    "expected_pattern": {"expression": "tenure>24→Churn='No'"},
+    "confidence_estimate": "medium",
+    "natural_language_description": "在网超过24个月的客户流失率较低"
+  },
+  {
+    "type": "logic",
+    "condition_attributes": ["tenure"],
+    "condition_values": {},
+    "dependent_attribute": "Churn",
+    "expected_pattern": {"expression": "tenure<6→Churn='Yes'"},
+    "confidence_estimate": "low",
+    "natural_language_description": "在网不足6个月的客户流失率较高"
+  },
+  {
+    "type": "fd",
+    "condition_attributes": ["gender"],
+    "condition_values": {},
+    "dependent_attribute": "SeniorCitizen",
+    "expected_pattern": {"expression": "gender→SeniorCitizen"},
+    "confidence_estimate": "low",
+    "natural_language_description": "性别与是否为老年人无直接函数依赖关系"
+  },
+  {
+    "type": "enum",
+    "condition_attributes": ["InternetService"],
+    "condition_values": {"InternetService": "Fiber optic"},
+    "dependent_attribute": "OnlineSecurity",
+    "expected_pattern": {"values": ["No", "Yes"]},
+    "confidence_estimate": "high",
+    "natural_language_description": "光纤网络客户在线安全可为'No'或'Yes'"
+  },
+  {
+    "type": "enum",
+    "condition_attributes": ["InternetService"],
+    "condition_values": {"InternetService": "DSL"},
+    "dependent_attribute": "OnlineSecurity",
+    "expected_pattern": {"values": ["No", "Yes"]},
+    "confidence_estimate": "high",
+    "natural_language_description": "DSL网络客户在线安全可为'No'或'Yes'"
+  },
+  {
+    "type": "range",
+    "condition_attributes": ["Contract"],
+    "condition_values": {"Contract": "One year"},
+    "dependent_attribute": "MonthlyCharges",
+    "expected_pattern": {"min": 30, "max": 110},
+    "confidence_estimate": "medium",
+    "natural_language_description": "一年期合同月消费通常在30-110之间"
+  },
+  {
+    "type": "logic",
+    "condition_attributes": ["Partner", "Dependents"],
+    "condition_values": {},
+    "dependent_attribute": "Churn",
+    "expected_pattern": {"expression": "Partner='Yes' AND Dependents='Yes'→Churn='No'"},
+    "confidence_estimate": "medium",
+    "natural_language_description": "有伴侣且有家属的客户流失率较低"
+  },
+  {
+    "type": "range",
+    "condition_attributes": ["InternetService"],
+    "condition_values": {"InternetService": "Fiber optic"},
+    "dependent_attribute": "MonthlyCharges",
+    "expected_pattern": {"min": 60, "max": 120},
+    "confidence_estimate": "medium",
+    "natural_language_description": "光纤网络客户月消费通常在60-120之间"
+  },
+  {
+    "type": "range",
+    "condition_attributes": ["InternetService"],
+    "condition_values": {"InternetService": "DSL"},
+    "dependent_attribute": "MonthlyCharges",
+    "expected_pattern": {"min": 20, "max": 80},
+    "confidence_estimate": "medium",
+    "natural_language_description": "DSL网络客户月消费通常在20-80之间"
+  },
+  {
+    "type": "range",
+    "condition_attributes": ["InternetService"],
+    "condition_values": {"InternetService": "No"},
+    "dependent_attribute": "MonthlyCharges",
+    "expected_pattern": {"min": 18, "max": 50},
+    "confidence_estimate": "medium",
+    "natural_language_description": "无网络服务客户月消费通常在18-50之间"
+  },
+  {
+    "type": "logic",
+    "condition_attributes": ["PaymentMethod"],
+    "condition_values": {},
+    "dependent_attribute": "Churn",
+    "expected_pattern": {"expression": "PaymentMethod='Electronic check'→Churn='Yes'"},
+    "confidence_estimate": "low",
+    "natural_language_description": "使用电子支票支付的客户流失率较高"
+  }
+]
+```

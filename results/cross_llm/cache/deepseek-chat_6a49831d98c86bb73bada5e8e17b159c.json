@@ -1,0 +1,256 @@
+```json
+[
+  {
+    "type": "enum",
+    "condition_attributes": ["InternetService"],
+    "condition_values": {"InternetService": "No"},
+    "dependent_attribute": "OnlineSecurity",
+    "expected_pattern": {"values": ["No internet service"]},
+    "confidence_estimate": "high",
+    "natural_language_description": "无网络服务的客户，在线安全服务必须为No internet service"
+  },
+  {
+    "type": "enum",
+    "condition_attributes": ["InternetService"],
+    "condition_values": {"InternetService": "No"},
+    "dependent_attribute": "OnlineBackup",
+    "expected_pattern": {"values": ["No internet service"]},
+    "confidence_estimate": "high",
+    "natural_language_description": "无网络服务的客户，在线备份服务必须为No internet service"
+  },
+  {
+    "type": "enum",
+    "condition_attributes": ["InternetService"],
+    "condition_values": {"InternetService": "No"},
+    "dependent_attribute": "DeviceProtection",
+    "expected_pattern": {"values": ["No internet service"]},
+    "confidence_estimate": "high",
+    "natural_language_description": "无网络服务的客户，设备保护服务必须为No internet service"
+  },
+  {
+    "type": "enum",
+    "condition_attributes": ["InternetService"],
+    "condition_values": {"InternetService": "No"},
+    "dependent_attribute": "TechSupport",
+    "expected_pattern": {"values": ["No internet service"]},
+    "confidence_estimate": "high",
+    "natural_language_description": "无网络服务的客户，技术支持服务必须为No internet service"
+  },
+  {
+    "type": "enum",
+    "condition_attributes": ["InternetService"],
+    "condition_values": {"InternetService": "No"},
+    "dependent_attribute": "StreamingTV",
+    "expected_pattern": {"values": ["No internet service"]},
+    "confidence_estimate": "high",
+    "natural_language_description": "无网络服务的客户，流媒体电视服务必须为No internet service"
+  },
+  {
+    "type": "enum",
+    "condition_attributes": ["InternetService"],
+    "condition_values": {"InternetService": "No"},
+    "dependent_attribute": "StreamingMovies",
+    "expected_pattern": {"values": ["No internet service"]},
+    "confidence_estimate": "high",
+    "natural_language_description": "无网络服务的客户，流媒体电影服务必须为No internet service"
+  },
+  {
+    "type": "enum",
+    "condition_attributes": ["PhoneService"],
+    "condition_values": {"PhoneService": "No"},
+    "dependent_attribute": "MultipleLines",
+    "expected_pattern": {"values": ["No phone service"]},
+    "confidence_estimate": "high",
+    "natural_language_description": "无电话服务的客户，多线路必须为No phone service"
+  },
+  {
+    "type": "enum",
+    "condition_attributes": ["PhoneService"],
+    "condition_values": {"PhoneService": "Yes"},
+    "dependent_attribute": "MultipleLines",
+    "expected_pattern": {"values": ["Yes", "No"]},
+    "confidence_estimate": "high",
+    "natural_language_description": "有电话服务的客户，多线路只能是Yes或No，不能是No phone service"
+  },
+  {
+    "type": "range",
+    "condition_attributes": ["Contract"],
+    "condition_values": {"Contract": "Month-to-month"},
+    "dependent_attribute": "MonthlyCharges",
+    "expected_pattern": {"min": 18, "max": 120},
+    "confidence_estimate": "high",
+    "natural_language_description": "按月合同客户的月消费应在18-120美元之间"
+  },
+  {
+    "type": "range",
+    "condition_attributes": ["Contract"],
+    "condition_values": {"Contract": "One year"},
+    "dependent_attribute": "MonthlyCharges",
+    "expected_pattern": {"min": 25, "max": 120},
+    "confidence_estimate": "medium",
+    "natural_language_description": "一年期合同客户的月消费应在25-120美元之间"
+  },
+  {
+    "type": "range",
+    "condition_attributes": ["Contract"],
+    "condition_values": {"Contract": "Two year"},
+    "dependent_attribute": "MonthlyCharges",
+    "expected_pattern": {"min": 50, "max": 120},
+    "confidence_estimate": "medium",
+    "natural_language_description": "两年期合同客户的月消费应在50-120美元之间"
+  },
+  {
+    "type": "range",
+    "condition_attributes": ["Contract"],
+    "condition_values": {"Contract": "Month-to-month"},
+    "dependent_attribute": "tenure",
+    "expected_pattern": {"min": 0, "max": 72},
+    "confidence_estimate": "high",
+    "natural_language_description": "按月合同客户的在网时长应在0-72个月之间"
+  },
+  {
+    "type": "range",
+    "condition_attributes": ["Contract"],
+    "condition_values": {"Contract": "One year"},
+    "dependent_attribute": "tenure",
+    "expected_pattern": {"min": 1, "max": 36},
+    "confidence_estimate": "medium",
+    "natural_language_description": "一年期合同客户的在网时长通常在1-36个月"
+  },
+  {
+    "type": "range",
+    "condition_attributes": ["Contract"],
+    "condition_values": {"Contract": "Two year"},
+    "dependent_attribute": "tenure",
+    "expected_pattern": {"min": 1, "max": 72},
+    "confidence_estimate": "medium",
+    "natural_language_description": "两年期合同客户的在网时长通常在1-72个月"
+  },
+  {
+    "type": "enum",
+    "condition_attributes": [],
+    "condition_values": {},
+    "dependent_attribute": "SeniorCitizen",
+    "expected_pattern": {"values": ["0", "1"]},
+    "confidence_estimate": "high",
+    "natural_language_description": "是否为老年人只能是0或1"
+  },
+  {
+    "type": "enum",
+    "condition_attributes": [],
+    "condition_values": {},
+    "dependent_attribute": "gender",
+    "expected_pattern": {"values": ["Male", "Female"]},
+    "confidence_estimate": "high",
+    "natural_language_description": "性别只能是Male或Female"
+  },
+  {
+    "type": "enum",
+    "condition_attributes": [],
+    "condition_values": {},
+    "dependent_attribute": "Partner",
+    "expected_pattern": {"values": ["Yes", "No"]},
+    "confidence_estimate": "high",
+    "natural_language_description": "是否有伴侣只能是Yes或No"
+  },
+  {
+    "type": "enum",
+    "condition_attributes": [],
+    "condition_values": {},
+    "dependent_attribute": "Dependents",
+    "expected_pattern": {"values": ["Yes", "No"]},
+    "confidence_estimate": "high",
+    "natural_language_description": "是否有家属只能是Yes或No"
+  },
+  {
+    "type": "enum",
+    "condition_attributes": [],
+    "condition_values": {},
+    "dependent_attribute": "PaperlessBilling",
+    "expected_pattern": {"values": ["Yes", "No"]},
+    "confidence_estimate": "high",
+    "natural_language_description": "是否无纸化账单只能是Yes或No"
+  },
+  {
+    "type": "enum",
+    "condition_attributes": [],
+    "condition_values": {},
+    "dependent_attribute": "PhoneService",
+    "expected_pattern": {"values": ["Yes", "No"]},
+    "confidence_estimate": "high",
+    "natural_language_description": "是否有电话服务只能是Yes或No"
+  },
+  {
+    "type": "logic",
+    "condition_attributes": ["tenure"],
+    "condition_values": {},
+    "dependent_attribute": "Churn",
+    "expected_pattern": {"expression": "tenure > 24 → Churn='No' with high probability"},
+    "confidence_estimate": "medium",
+    "natural_language_description": "在网超过2年的客户流失率应显著低于新客户"
+  },
+  {
+    "type": "consistency",
+    "condition_attributes": ["tenure", "MonthlyCharges"],
+    "condition_values": {},
+    "dependent_attribute": "TotalCharges",
+    "expected_pattern": {"relation": "TotalCharges ≈ tenure * MonthlyCharges"},
+    "confidence_estimate": "high",
+    "natural_language_description": "总消费应近似等于在网月数乘以月消费"
+  },
+  {
+    "type": "range",
+    "condition_attributes": [],
+    "condition_values": {},
+    "dependent_attribute": "MonthlyCharges",
+    "expected_pattern": {"min": 18, "max": 120},
+    "confidence_estimate": "high",
+    "natural_language_description": "月消费应在18-120美元之间"
+  },
+  {
+    "type": "range",
+    "condition_attributes": [],
+    "condition_values": {},
+    "dependent_attribute": "TotalCharges",
+    "expected_pattern": {"min": 0, "max": 9000},
+    "confidence_estimate": "high",
+    "natural_language_description": "总消费应在0-9000美元之间"
+  },
+  {
+    "type": "range",
+    "condition_attributes": [],
+    "condition_values": {},
+    "dependent_attribute": "tenure",
+    "expected_pattern": {"min": 0, "max": 72},
+    "confidence_estimate": "high",
+    "natural_language_description": "在网时长应在0-72个月之间"
+  },
+  {
+    "type": "enum",
+    "condition_attributes": [],
+    "condition_values": {},
+    "dependent_attribute": "PaymentMethod",
+    "expected_pattern": {"values": ["Electronic check", "Mailed check", "Bank transfer (automatic)", "Credit card (automatic)"]},
+    "confidence_estimate": "high",
+    "natural_language_description": "支付方式必须在四种已知方式之内"
+  },
+  {
+    "type": "enum",
+    "condition_attributes": [],
+    "condition_values": {},
+    "dependent_attribute": "InternetService",
+    "expected_pattern": {"values": ["DSL", "Fiber optic", "No"]},
+    "confidence_estimate": "high",
+    "natural_language_description": "网络服务类型必须是DSL、Fiber optic或No"
+  },
+  {
+    "type": "enum",
+    "condition_attributes": [],
+    "condition_values": {},
+    "dependent_attribute": "Contract",
+    "expected_pattern": {"values": ["Month-to-month", "One year", "Two year"]},
+    "confidence_estimate": "high",
+    "natural_language_description": "合同类型必须是Month-to-month、One year或Two year"
+  }
+]
+```

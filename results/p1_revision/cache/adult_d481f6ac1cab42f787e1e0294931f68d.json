@@ -1,0 +1,139 @@
+```json
+[
+  {
+    "type": "fd",
+    "condition_attributes": [],
+    "condition_values": {},
+    "dependent_attribute": "education_num",
+    "expected_pattern": "education → education_num",
+    "confidence_estimate": "high",
+    "natural_language_description": "教育程度（education）决定教育年限（education_num），例如Prof-school对应15，HS-grad对应9，Bachelors对应13。"
+  },
+  {
+    "type": "fd",
+    "condition_attributes": [],
+    "condition_values": {},
+    "dependent_attribute": "relationship",
+    "expected_pattern": "marital_status → relationship",
+    "confidence_estimate": "high",
+    "natural_language_description": "婚姻状况（marital_status）决定家庭关系（relationship），例如Married-civ-spouse通常对应Husband或Wife，Never-married对应Not-in-family。"
+  },
+  {
+    "type": "fd",
+    "condition_attributes": [],
+    "condition_values": {},
+    "dependent_attribute": "relationship",
+    "expected_pattern": "sex → relationship",
+    "confidence_estimate": "medium",
+    "natural_language_description": "性别（sex）影响家庭关系（relationship），例如Male通常对应Husband，Female对应Wife或Not-in-family。"
+  },
+  {
+    "type": "range",
+    "condition_attributes": [],
+    "condition_values": {},
+    "dependent_attribute": "age",
+    "expected_pattern": "age ∈ [17, 90]",
+    "confidence_estimate": "high",
+    "natural_language_description": "年龄（age）的全局取值范围为17到90岁。"
+  },
+  {
+    "type": "range",
+    "condition_attributes": [],
+    "condition_values": {},
+    "dependent_attribute": "hours_per_week",
+    "expected_pattern": "hours_per_week ∈ [1, 99]",
+    "confidence_estimate": "high",
+    "natural_language_description": "每周工作小时数（hours_per_week）的全局取值范围为1到99小时。"
+  },
+  {
+    "type": "range",
+    "condition_attributes": ["occupation"],
+    "condition_values": {"occupation": "Exec-managerial"},
+    "dependent_attribute": "hours_per_week",
+    "expected_pattern": "hours_per_week ∈ [30, 80]",
+    "confidence_estimate": "medium",
+    "natural_language_description": "对于职业为Exec-managerial的人，每周工作小时数通常在30到80小时之间。"
+  },
+  {
+    "type": "range",
+    "condition_attributes": [],
+    "condition_values": {},
+    "dependent_attribute": "capital_gain",
+    "expected_pattern": "capital_gain >= 0",
+    "confidence_estimate": "high",
+    "natural_language_description": "资本收益（capital_gain）必须大于等于0。"
+  },
+  {
+    "type": "range",
+    "condition_attributes": [],
+    "condition_values": {},
+    "dependent_attribute": "capital_loss",
+    "expected_pattern": "capital_loss >= 0",
+    "confidence_estimate": "high",
+    "natural_language_description": "资本损失（capital_loss）必须大于等于0。"
+  },
+  {
+    "type": "enum",
+    "condition_attributes": [],
+    "condition_values": {},
+    "dependent_attribute": "workclass",
+    "expected_pattern": "workclass ∈ {Private, Self-emp-not-inc, Local-gov, State-gov, Self-emp-inc, Federal-gov, Without-pay, Never-worked}",
+    "confidence_estimate": "high",
+    "natural_language_description": "工作类别（workclass）必须是预定义的合法取值集合之一。"
+  },
+  {
+    "type": "enum",
+    "condition_attributes": [],
+    "condition_values": {},
+    "dependent_attribute": "race",
+    "expected_pattern": "race ∈ {White, Black, Asian-Pac-Islander, Amer-Indian-Eskimo, Other}",
+    "confidence_estimate": "high",
+    "natural_language_description": "种族（race）必须是预定义的合法取值集合之一。"
+  },
+  {
+    "type": "enum",
+    "condition_attributes": [],
+    "condition_values": {},
+    "dependent_attribute": "sex",
+    "expected_pattern": "sex ∈ {Male, Female}",
+    "confidence_estimate": "high",
+    "natural_language_description": "性别（sex）必须是Male或Female。"
+  },
+  {
+    "type": "enum",
+    "condition_attributes": [],
+    "condition_values": {},
+    "dependent_attribute": "marital_status",
+    "expected_pattern": "marital_status ∈ {Married-civ-spouse, Never-married, Divorced, Separated, Widowed, Married-spouse-absent, Married-AF-spouse}",
+    "confidence_estimate": "high",
+    "natural_language_description": "婚姻状况（marital_status）必须是预定义的合法取值集合之一。"
+  },
+  {
+    "type": "logic",
+    "condition_attributes": ["education"],
+    "condition_values": {"education": "Prof-school"},
+    "dependent_attribute": "income",
+    "expected_pattern": "income = '>50K'",
+    "confidence_estimate": "medium",
+    "natural_language_description": "如果教育程度是Prof-school，则收入通常大于50K。"
+  },
+  {
+    "type": "logic",
+    "condition_attributes": ["hours_per_week"],
+    "condition_values": {"hours_per_week": 55},
+    "dependent_attribute": "income",
+    "expected_pattern": "income = '>50K'",
+    "confidence_estimate": "low",
+    "natural_language_description": "如果每周工作55小时，收入可能大于50K，但并非绝对。"
+  },
+  {
+    "type": "logic",
+    "condition_attributes": ["age", "marital_status"],
+    "condition_values": {"age": 28, "marital_status": "Never-married"},
+    "dependent_attribute": "relationship",
+    "expected_pattern": "relationship = 'Not-in-family'",
+    "confidence_estimate": "medium",
+    "natural_language_description": "28岁且未婚的人，家庭关系通常为Not-in-family。"
+  }
+]
+```
